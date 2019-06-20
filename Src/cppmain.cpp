@@ -21,7 +21,7 @@ void setup(void) {
 
     if(md_id == 0) {
         md_id = 0X7FF;
-        HAL_GPIO_WritePin(LED_R_GPIO_Port, LED_R_Pin, RESET);
+        HAL_GPIO_WritePin(LED_R_GPIO_Port, LED_R_Pin, GPIO_PIN_RESET);
     }
     // ソフトウェアモジュール初期化
     canmd_manager_init();
@@ -76,7 +76,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	// 約180msecタイマ
 	if(htim->Instance == TIM7) {
 		if(canmd_manager_time_out_check()) {
-			HAL_GPIO_WritePin(LED_B_GPIO_Port, LED_B_Pin, SET);
+			HAL_GPIO_WritePin(LED_B_GPIO_Port, LED_B_Pin, GPIO_PIN_SET);
 		}
 		else {
 			HAL_GPIO_TogglePin(LED_B_GPIO_Port, LED_B_Pin);
