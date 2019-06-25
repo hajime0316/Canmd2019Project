@@ -18,7 +18,7 @@ extern "C" {
 void stm32f3_easy_can_init(CAN_HandleTypeDef *hcan, int acceptance_filter, int filter_mask);
 void stm32f3_easy_can_get_receive_message(int *receive_id, int *receive_dlc, unsigned char receive_message[]);
 int stm32f3_easy_can_transmit_message(int transmit_id, int transmit_dlc, const unsigned char transmit_message[]);
-void stm32f3_easy_can_interrupt_handler(void); // óMŠ„‚è‚İƒnƒ“ƒhƒ‰(óMŠ„‚è‚İ‚ª”­¶‚·‚é‚ÆŒÄ‚Î‚ê‚éD©•ª‚Å’è‹`‚·‚é•K—v‚ª‚ ‚é)
+void stm32f3_easy_can_interrupt_handler(void); // å—ä¿¡å‰²ã‚Šè¾¼ã¿ãƒãƒ³ãƒ‰ãƒ©(å—ä¿¡å‰²ã‚Šè¾¼ã¿ãŒç™ºç”Ÿã™ã‚‹ã¨å‘¼ã°ã‚Œã‚‹ï¼è‡ªåˆ†ã§å®šç¾©ã™ã‚‹å¿…è¦ãŒã‚ã‚‹)
 
 #ifdef __cplusplus
 };

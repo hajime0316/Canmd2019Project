@@ -9,27 +9,27 @@
 #include "canmd_manager.h"
 
 //*********************************************************
-//    ƒOƒ[ƒoƒ‹•Ï”
+//    ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
 //*********************************************************
-static MdInitData internal_md_init_data;            // MD‰Šú‰»ƒf[ƒ^
-static int internal_motor_control_data[2];          // ƒ‚[ƒ^[ƒRƒ“ƒgƒ[ƒ‹ƒf[ƒ^
-static int motor_control_data_receive_flg;          // ƒ‚[ƒ^[ƒRƒ“ƒgƒ[ƒ‹ƒf[ƒ^óMƒtƒ‰ƒO
+static MdInitData internal_md_init_data;            // MDåˆæœŸåŒ–ãƒ‡ãƒ¼ã‚¿
+static int internal_motor_control_data[2];          // ãƒ¢ãƒ¼ã‚¿ãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‡ãƒ¼ã‚¿
+static int motor_control_data_receive_flg;          // ãƒ¢ãƒ¼ã‚¿ãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‡ãƒ¼ã‚¿å—ä¿¡ãƒ•ãƒ©ã‚°
 
 //*********************************************************
 //    canmd_manager_init
 //*********************************************************
-//  [ŠT—v]
-//    ƒ‚ƒWƒ…[ƒ‹‚Ì‰Šú‰»
-//  [ˆø”]
-//    –³‚µ
-//  [–ß‚è’l]
-//    –³‚µ
-//  [g—pƒOƒ[ƒoƒ‹•Ï”]
+//  [æ¦‚è¦]
+//    ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®åˆæœŸåŒ–
+//  [å¼•æ•°]
+//    ç„¡ã—
+//  [æˆ»ã‚Šå€¤]
+//    ç„¡ã—
+//  [ä½¿ç”¨ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°]
 //    internal_md_init_data (W)
 //    internal_motor_control_data (W)
 //    motor_control_data_receive_flg (W)
-//  [”õl]
-//    “Á‚É‚È‚µ
+//  [å‚™è€ƒ]
+//    ç‰¹ã«ãªã—
 //--------------------------------------------------------
 void canmd_manager_init(void)
 {
@@ -47,7 +47,7 @@ void canmd_manager_init(void)
         internal_motor_control_data[i] = 0;
     }
     
-    motor_control_data_receive_flg = 0;    // MDƒRƒ“ƒgƒ[ƒ‹ƒf[ƒ^óMƒtƒ‰ƒOƒNƒŠƒA
+    motor_control_data_receive_flg = 0;    // MDã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‡ãƒ¼ã‚¿å—ä¿¡ãƒ•ãƒ©ã‚°ã‚¯ãƒªã‚¢
 
     return;
 }
@@ -55,22 +55,22 @@ void canmd_manager_init(void)
 //*********************************************************
 //    canmd_manager_get_can_receive_data
 //*********************************************************
-//  [ŠT—v]
-//    CAN’ÊM‚ÅóM‚µ‚½ƒf[ƒ^‚ğƒZƒbƒg
-//  [ˆø”]
-//    receive_data    : óMƒf[ƒ^
-//    receive_data_len: óMƒf[ƒ^‚Ì’·‚³
-//  [–ß‚è’l]
-//    MD_DATA_TYPE_PID_GAIN_0   : óMƒf[ƒ^‚ÍPID_GAIN_0
-//    MD_DATA_TYPE_PID_GAIN_1   : óMƒf[ƒ^‚ÍPID_GAIN_1
-//    MD_DATA_TYPE_TIME_PARAM   : óMƒf[ƒ^‚ÍPID_PARAM
-//    MD_DATA_TYPE_CONTROL_DATA: óMƒf[ƒ^‚ÍPID_CONTROL_DATA
-//  [g—pƒOƒ[ƒoƒ‹•Ï”]
+//  [æ¦‚è¦]
+//    CANé€šä¿¡ã§å—ä¿¡ã—ãŸãƒ‡ãƒ¼ã‚¿ã‚’ã‚»ãƒƒãƒˆ
+//  [å¼•æ•°]
+//    receive_data    : å—ä¿¡ãƒ‡ãƒ¼ã‚¿
+//    receive_data_len: å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã®é•·ã•
+//  [æˆ»ã‚Šå€¤]
+//    MD_DATA_TYPE_PID_GAIN_0   : å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã¯PID_GAIN_0
+//    MD_DATA_TYPE_PID_GAIN_1   : å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã¯PID_GAIN_1
+//    MD_DATA_TYPE_TIME_PARAM   : å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã¯PID_PARAM
+//    MD_DATA_TYPE_CONTROL_DATA: å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã¯PID_CONTROL_DATA
+//  [ä½¿ç”¨ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°]
 //    internal_md_init_data (W)
 //    internal_motor_control_data (W)
 //    motor_control_data_receive_flg (W)
-//  [”õl]
-//    “Á‚É‚È‚µ
+//  [å‚™è€ƒ]
+//    ç‰¹ã«ãªã—
 //--------------------------------------------------------
 MdDataType canmd_manager_set_can_receive_data(const unsigned char receive_data[], int receive_data_len)
 {
@@ -122,7 +122,7 @@ MdDataType canmd_manager_set_can_receive_data(const unsigned char receive_data[]
                     internal_motor_control_data[1] = (-1 << 11) | (((receive_data[0] & 0b111) << 8) | receive_data[2]);
                 }
                 
-                motor_control_data_receive_flg = 1;        // MDƒRƒ“ƒgƒ[ƒ‹ƒf[ƒ^óMƒtƒ‰ƒOƒZƒbƒg
+                motor_control_data_receive_flg = 1;        // MDã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‡ãƒ¼ã‚¿å—ä¿¡ãƒ•ãƒ©ã‚°ã‚»ãƒƒãƒˆ
             }
             
             break;
@@ -134,16 +134,16 @@ MdDataType canmd_manager_set_can_receive_data(const unsigned char receive_data[]
 //*********************************************************
 //    canmd_manager_get_md_init_data
 //*********************************************************
-//  [ŠT—v]
-//    MD‰Šú‰»ƒf[ƒ^‚Ìæ“¾
-//  [ˆø”]
-//    md_init_data: MD‰Šú‰»ƒf[ƒ^‚ğŠi”[‚·‚é\‘¢‘Ì‚Ìƒ|ƒCƒ“ƒ^ 
-//  [–ß‚è’l]
-//    –³‚µ
-//  [g—pƒOƒ[ƒoƒ‹•Ï”]
+//  [æ¦‚è¦]
+//    MDåˆæœŸåŒ–ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
+//  [å¼•æ•°]
+//    md_init_data: MDåˆæœŸåŒ–ãƒ‡ãƒ¼ã‚¿ã‚’æ ¼ç´ã™ã‚‹æ§‹é€ ä½“ã®ãƒã‚¤ãƒ³ã‚¿ 
+//  [æˆ»ã‚Šå€¤]
+//    ç„¡ã—
+//  [ä½¿ç”¨ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°]
 //    internal_md_init_data (R)
-//  [”õl]
-//    “Á‚É‚È‚µ
+//  [å‚™è€ƒ]
+//    ç‰¹ã«ãªã—
 //--------------------------------------------------------
 void canmd_manager_get_md_init_data(MdInitData *md_init_data)
 {
@@ -155,16 +155,16 @@ void canmd_manager_get_md_init_data(MdInitData *md_init_data)
 //*********************************************************
 //    canmd_manager_get_motor_control_data
 //*********************************************************
-//  [ŠT—v]
-//    ƒ‚[ƒ^[ƒRƒ“ƒgƒ[ƒ‹ƒf[ƒ^‚Ìæ“¾
-//  [ˆø”]
-//    md_control_data: ƒ‚[ƒ^[ƒRƒ“ƒgƒ[ƒ‹ƒf[ƒ^‚ğŠi”[‚·‚é”z—ñ‚Ìƒ|ƒCƒ“ƒ^
-//  [–ß‚è’l]
-//    –³‚µ
-//  [g—pƒOƒ[ƒoƒ‹•Ï”]
+//  [æ¦‚è¦]
+//    ãƒ¢ãƒ¼ã‚¿ãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
+//  [å¼•æ•°]
+//    md_control_data: ãƒ¢ãƒ¼ã‚¿ãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’æ ¼ç´ã™ã‚‹é…åˆ—ã®ãƒã‚¤ãƒ³ã‚¿
+//  [æˆ»ã‚Šå€¤]
+//    ç„¡ã—
+//  [ä½¿ç”¨ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°]
 //    internal_motor_control_data (R)
-//  [”õl]
-//    “Á‚É‚È‚µ
+//  [å‚™è€ƒ]
+//    ç‰¹ã«ãªã—
 //--------------------------------------------------------
 void canmd_manager_get_motor_control_data(int motor_control_data[])
 {
@@ -177,17 +177,17 @@ void canmd_manager_get_motor_control_data(int motor_control_data[])
 //*********************************************************
 //    canmd_manager_get_control_data_receive_flg
 //*********************************************************
-//  [ŠT—v]
-//    ƒ‚[ƒ^[ƒRƒ“ƒgƒ[ƒ‹ƒf[ƒ^óMƒtƒ‰ƒO‚Ìæ“¾
-//  [ˆø”]
-//    –³‚µ
-//  [–ß‚è’l]
-//    0: ƒ‚[ƒ^[ƒRƒ“ƒgƒ[ƒ‹ƒf[ƒ^óMƒtƒ‰ƒO‚Í0(óM‚µ‚Ä‚È‚¢)
-//    1: ƒ‚[ƒ^[ƒRƒ“ƒgƒ[ƒ‹ƒf[ƒ^óMƒtƒ‰ƒO‚Í1(óM‚µ‚½)
-//  [g—pƒOƒ[ƒoƒ‹•Ï”]
+//  [æ¦‚è¦]
+//    ãƒ¢ãƒ¼ã‚¿ãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‡ãƒ¼ã‚¿å—ä¿¡ãƒ•ãƒ©ã‚°ã®å–å¾—
+//  [å¼•æ•°]
+//    ç„¡ã—
+//  [æˆ»ã‚Šå€¤]
+//    0: ãƒ¢ãƒ¼ã‚¿ãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‡ãƒ¼ã‚¿å—ä¿¡ãƒ•ãƒ©ã‚°ã¯0(å—ä¿¡ã—ã¦ãªã„)
+//    1: ãƒ¢ãƒ¼ã‚¿ãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‡ãƒ¼ã‚¿å—ä¿¡ãƒ•ãƒ©ã‚°ã¯1(å—ä¿¡ã—ãŸ)
+//  [ä½¿ç”¨ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°]
 //    motor_control_data_receive_flg (R)
-//  [”õl]
-//    “Á‚É‚È‚µ
+//  [å‚™è€ƒ]
+//    ç‰¹ã«ãªã—
 //--------------------------------------------------------
 int canmd_manager_get_control_data_receive_flg(void)
 {
@@ -197,18 +197,18 @@ int canmd_manager_get_control_data_receive_flg(void)
 //*********************************************************
 //    canmd_manager_time_out_check
 //*********************************************************
-//  [ŠT—v]
-//    ƒ‚[ƒ^[ƒRƒ“ƒgƒ[ƒ‹ƒf[ƒ^óM‚Ìƒ^ƒCƒ€ƒAƒEƒgƒ`ƒFƒbƒN
-//  [ˆø”]
-//    –³‚µ
-//  [–ß‚è’l]
-//    0: ³íI—¹
-//    1: ƒ^ƒCƒ€ƒAƒEƒg
-//  [g—pƒOƒ[ƒoƒ‹•Ï”]
+//  [æ¦‚è¦]
+//    ãƒ¢ãƒ¼ã‚¿ãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‡ãƒ¼ã‚¿å—ä¿¡ã®ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆãƒã‚§ãƒƒã‚¯
+//  [å¼•æ•°]
+//    ç„¡ã—
+//  [æˆ»ã‚Šå€¤]
+//    0: æ­£å¸¸çµ‚äº†
+//    1: ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ
+//  [ä½¿ç”¨ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°]
 //    motor_control_data_receive_flg (R/W)
 //    internal_motor_control_data(W)
-//  [”õl]
-//    100msŠÔŠu‚Å’èŠú“I‚ÉƒR[ƒ‹‚·‚é
+//  [å‚™è€ƒ]
+//    100msé–“éš”ã§å®šæœŸçš„ã«ã‚³ãƒ¼ãƒ«ã™ã‚‹
 //--------------------------------------------------------
 int canmd_manager_time_out_check(void)
 {
@@ -226,18 +226,18 @@ int canmd_manager_time_out_check(void)
 //*********************************************************
 //    canmd_manager_time_out_check
 //*********************************************************
-//  [ŠT—v]
-//    ƒ‚[ƒ^[ƒRƒ“ƒgƒ[ƒ‹ƒf[ƒ^óM‚Ìƒ^ƒCƒ€ƒAƒEƒgƒ`ƒFƒbƒN
-//  [ˆø”]
-//    –³‚µ
-//  [–ß‚è’l]
-//    0: ³íI—¹
-//    1: ƒ^ƒCƒ€ƒAƒEƒg
-//  [g—pƒOƒ[ƒoƒ‹•Ï”]
+//  [æ¦‚è¦]
+//    ãƒ¢ãƒ¼ã‚¿ãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‡ãƒ¼ã‚¿å—ä¿¡ã®ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆãƒã‚§ãƒƒã‚¯
+//  [å¼•æ•°]
+//    ç„¡ã—
+//  [æˆ»ã‚Šå€¤]
+//    0: æ­£å¸¸çµ‚äº†
+//    1: ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ
+//  [ä½¿ç”¨ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°]
 //    motor_control_data_receive_flg (R/W)
 //    internal_motor_control_data(W)
-//  [”õl]
-//    100msŠÔŠu‚Å’èŠú“I‚ÉƒR[ƒ‹‚·‚é
+//  [å‚™è€ƒ]
+//    100msé–“éš”ã§å®šæœŸçš„ã«ã‚³ãƒ¼ãƒ«ã™ã‚‹
 //--------------------------------------------------------
 int canmd_manager_set_velocity_data(void)
 {

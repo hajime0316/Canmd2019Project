@@ -13,7 +13,7 @@
 static int md_id = 0;
 
 void setup(void) {
-    // md_id‰Šú‰»
+    // md_idåˆæœŸåŒ–
     md_id = HAL_GPIO_ReadPin(DIP_SW_4_GPIO_Port, DIP_SW_4_Pin) << 3
           | HAL_GPIO_ReadPin(DIP_SW_3_GPIO_Port, DIP_SW_3_Pin) << 2
           | HAL_GPIO_ReadPin(DIP_SW_2_GPIO_Port, DIP_SW_2_Pin) << 1
@@ -23,10 +23,10 @@ void setup(void) {
         md_id = 0X7FF;
         HAL_GPIO_WritePin(LED_R_GPIO_Port, LED_R_Pin, GPIO_PIN_RESET);
     }
-    // ƒ\ƒtƒgƒEƒFƒAƒ‚ƒWƒ…[ƒ‹‰Šú‰»
+    // ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«åˆæœŸåŒ–
     canmd_manager_init();
-    // ƒn[ƒhƒEƒFƒAƒ‚ƒWƒ…[ƒ‹ƒXƒ^[ƒg
-    //// ’ÊMŠÖŒW
+    // ãƒãƒ¼ãƒ‰ã‚¦ã‚§ã‚¢ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚¹ã‚¿ãƒ¼ãƒˆ
+    //// é€šä¿¡é–¢ä¿‚
     stm32f3_printf_init(&huart3);
     stm32f3_easy_can_init(&hcan, md_id, 0X7FF);
     //// PWM
@@ -38,42 +38,42 @@ void setup(void) {
     HAL_TIMEx_PWMN_Start(&htim8, TIM_CHANNEL_1);
     HAL_TIM_PWM_Start(&htim8,TIM_CHANNEL_2);
     HAL_TIMEx_PWMN_Start(&htim8, TIM_CHANNEL_2);
-    //// ƒ^ƒCƒ~ƒ“ƒOƒŠƒ\[ƒX
+    //// ã‚¿ã‚¤ãƒŸãƒ³ã‚°ãƒªã‚½ãƒ¼ã‚¹
     HAL_TIM_Base_Start_IT(&htim6);
     HAL_TIM_Base_Start_IT(&htim7);
 }
 
 void loop(void) {
     int motor_control_data[2];
-    // ƒ‚[ƒ^[ƒRƒ“ƒgƒ[ƒ‹ƒf[ƒ^æ“¾
+    // ãƒ¢ãƒ¼ã‚¿ãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‡ãƒ¼ã‚¿å–å¾—
     canmd_manager_get_motor_control_data(motor_control_data);
 
-    // ƒfƒoƒbƒOo—Í
+    // ãƒ‡ãƒãƒƒã‚°å‡ºåŠ›
     stm32f3_printf("%5d  %5d  ", motor_control_data[0], motor_control_data[1]);
     stm32f3_printf("%3d", md_id);
     stm32f3_printf("\r\n");
 }
 
 //**************************
-//    ƒ^ƒCƒ}Š„‚è‚İŠÖ”
+//    ã‚¿ã‚¤ãƒå‰²ã‚Šè¾¼ã¿é–¢æ•°
 //**************************
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	// 5msecƒ^ƒCƒ}
+	// 5msecã‚¿ã‚¤ãƒ
 	if(htim->Instance == TIM6) {
 		int motor_control_data[2] = {};
 
-		// ƒ‚[ƒ^ƒRƒ“ƒgƒ[ƒ‹ƒf[ƒ^æ“¾
+		// ãƒ¢ãƒ¼ã‚¿ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‡ãƒ¼ã‚¿å–å¾—
 		canmd_manager_get_motor_control_data(motor_control_data);
 
-		// PWM‚Ìƒfƒ…[ƒeƒB[”äXV
+		// PWMã®ãƒ‡ãƒ¥ãƒ¼ãƒ†ã‚£ãƒ¼æ¯”æ›´æ–°
 		TIM8->CCR1 = PWM_DUTY_ZERO + PWM_DUTY_MAX * motor_control_data[0] / (double)MOTOR_CONTROL_DATA_MAX;
 		TIM8->CCR2 = PWM_DUTY_ZERO - PWM_DUTY_MAX * motor_control_data[0] / (double)MOTOR_CONTROL_DATA_MAX;
 		TIM1->CCR1 = PWM_DUTY_ZERO + PWM_DUTY_MAX * motor_control_data[1] / (double)MOTOR_CONTROL_DATA_MAX;
 		TIM1->CCR2 = PWM_DUTY_ZERO - PWM_DUTY_MAX * motor_control_data[1] / (double)MOTOR_CONTROL_DATA_MAX;
 	}
 
-	// –ñ180msecƒ^ƒCƒ}
+	// ç´„180msecã‚¿ã‚¤ãƒ
 	if(htim->Instance == TIM7) {
 		if(canmd_manager_time_out_check()) {
 			HAL_GPIO_WritePin(LED_B_GPIO_Port, LED_B_Pin, GPIO_PIN_SET);
@@ -85,7 +85,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 }
 
 //**************************
-//    CAN’ÊMóMŠ„‚è‚İ
+//    CANé€šä¿¡å—ä¿¡å‰²ã‚Šè¾¼ã¿
 //**************************
 void stm32f3_easy_can_interrupt_handler(void)
 {
@@ -93,10 +93,10 @@ void stm32f3_easy_can_interrupt_handler(void)
 	int receive_dlc;
 	unsigned char receive_message[8];
 
-	// óMƒf[ƒ^æ“¾
+	// å—ä¿¡ãƒ‡ãƒ¼ã‚¿å–å¾—
 	stm32f3_easy_can_get_receive_message(&receive_id, &receive_dlc, receive_message);
 
-	// óMƒf[ƒ^ˆ—
+	// å—ä¿¡ãƒ‡ãƒ¼ã‚¿å‡¦ç†
 	canmd_manager_set_can_receive_data(receive_message, receive_dlc);
 
 	return;

@@ -11,10 +11,10 @@
 #define MOTOR_CONTROL_DATA_MAX 1023
 
 typedef struct tag_MdInitData {
-    double kp[2], ki[2], kd[2];     // ‘—‚ç‚ê‚Ä‚«‚½ƒf[ƒ^‚ğ10‚ÅŠ„‚é
+    double kp[2], ki[2], kd[2];     // é€ã‚‰ã‚Œã¦ããŸãƒ‡ãƒ¼ã‚¿ã‚’10ã§å‰²ã‚‹
     int control_loop_time_scale;    // 
     int pwm_period_scale;           // 
-    int enable_pid_controller_flg;  // PIDƒRƒ“ƒgƒ[ƒ‰‚ğ—LŒø‰»‚·‚é‚©‚Ç‚¤‚©
+    int enable_pid_controller_flg;  // PIDã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã‚’æœ‰åŠ¹åŒ–ã™ã‚‹ã‹ã©ã†ã‹
 } MdInitData;
 
 typedef enum tag_MdDataType {

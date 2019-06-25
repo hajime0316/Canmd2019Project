@@ -11,7 +11,7 @@
 #define CAN_RX_FIFO CAN_RX_FIFO0
 
 //*********************************************************
-//    ƒOƒ[ƒoƒ‹•Ï”
+//    ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
 //*********************************************************
 static CAN_HandleTypeDef *h_easy_can_p;
 static int internal_receive_id;
@@ -21,28 +21,28 @@ static unsigned char internal_receive_message[8];
 //*********************************************************
 //    stm32f3_easy_can_init
 //*********************************************************
-//  [ŠT—v]
-//    ƒ‚ƒWƒ…[ƒ‹‚Ì‰Šú‰»
-//  [ˆø”]
-//    hcan              : CubeMX‚Å¶¬‚³‚ê‚éCANƒ‚ƒWƒ…[ƒ‹‚Ìƒnƒ“ƒhƒ‹
-//    acceptance_filter : ƒAƒNƒZƒvƒ^ƒ“ƒXƒtƒBƒ‹ƒ^(0X000`0X7FF)
-//    filter_mask       : ƒtƒBƒ‹ƒ^ƒ}ƒXƒN(0X000`0X7FF)
-//  [–ß‚è’l]
-//    –³‚µ
-//  [g—pƒOƒ[ƒoƒ‹•Ï”]
+//  [æ¦‚è¦]
+//    ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®åˆæœŸåŒ–
+//  [å¼•æ•°]
+//    hcan              : CubeMXã§ç”Ÿæˆã•ã‚Œã‚‹CANãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®ãƒãƒ³ãƒ‰ãƒ«
+//    acceptance_filter : ã‚¢ã‚¯ã‚»ãƒ—ã‚¿ãƒ³ã‚¹ãƒ•ã‚£ãƒ«ã‚¿(0X000ï½0X7FF)
+//    filter_mask       : ãƒ•ã‚£ãƒ«ã‚¿ãƒã‚¹ã‚¯(0X000ï½0X7FF)
+//  [æˆ»ã‚Šå€¤]
+//    ç„¡ã—
+//  [ä½¿ç”¨ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°]
 //    h_easy_can_p (W)
 //    internal_receive_id (W)
 //    internal_receive_dlc (W)
 //    internal_receive_message (W)
-//  [”õl]
-//    “Á‚É–³‚µ
+//  [å‚™è€ƒ]
+//    ç‰¹ã«ç„¡ã—
 //--------------------------------------------------------
 void stm32f3_easy_can_init(CAN_HandleTypeDef *hcan, int acceptance_filter, int filter_mask)
 {
 	CAN_FilterTypeDef sFilterConfig;
 	int i = 0;
 
-	// “à•”•Ï”‚Ì‰Šú‰»
+	// å†…éƒ¨å¤‰æ•°ã®åˆæœŸåŒ–
 	h_easy_can_p = hcan;
 	internal_receive_id = 0;
 	internal_receive_dlc = 0;
@@ -50,7 +50,7 @@ void stm32f3_easy_can_init(CAN_HandleTypeDef *hcan, int acceptance_filter, int f
 		internal_receive_message[i] = 0;
 	}
 
-	// ƒtƒBƒ‹ƒ^İ’è
+	// ãƒ•ã‚£ãƒ«ã‚¿è¨­å®š
 	sFilterConfig.FilterBank = 0;
     sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
     sFilterConfig.FilterScale = CAN_FILTERSCALE_16BIT;
@@ -63,10 +63,10 @@ void stm32f3_easy_can_init(CAN_HandleTypeDef *hcan, int acceptance_filter, int f
     sFilterConfig.SlaveStartFilterBank = 14;
     HAL_CAN_ConfigFilter(h_easy_can_p,&sFilterConfig);
 
-    // óMŠ„‚è‚İ—LŒø‰»
+    // å—ä¿¡å‰²ã‚Šè¾¼ã¿æœ‰åŠ¹åŒ–
     HAL_CAN_ActivateNotification(h_easy_can_p, CAN_IT_RX_FIFO0_MSG_PENDING);
 
-    // CANƒ‚ƒWƒ…[ƒ‹ƒXƒ^[ƒg
+    // CANãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã‚¹ã‚¿ãƒ¼ãƒˆ
     HAL_CAN_Start(h_easy_can_p);
 
     return;
@@ -75,21 +75,21 @@ void stm32f3_easy_can_init(CAN_HandleTypeDef *hcan, int acceptance_filter, int f
 //*********************************************************
 //    stm32f3_easy_can_get_receive_message
 //*********************************************************
-//  [ŠT—v]
-//    óMƒf[ƒ^æ“¾
-//  [ˆø”]
-//    receive_id     : óMƒf[ƒ^‚ÌID‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^
-//    receive_dlc    : óMƒf[ƒ^‚Ì’·‚³‚ğŠi”[‚·‚é•Ï”‚Ìƒ|ƒCƒ“ƒ^
-//    receive_message: óMƒf[ƒ^‚ğŠi”[‚·‚é”z—ñ
-//  [–ß‚è’l]
-//    –³‚µ
-//  [g—pƒOƒ[ƒoƒ‹•Ï”]
+//  [æ¦‚è¦]
+//    å—ä¿¡ãƒ‡ãƒ¼ã‚¿å–å¾—
+//  [å¼•æ•°]
+//    receive_id     : å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã®IDã‚’æ ¼ç´ã™ã‚‹å¤‰æ•°ã®ãƒã‚¤ãƒ³ã‚¿
+//    receive_dlc    : å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã®é•·ã•ã‚’æ ¼ç´ã™ã‚‹å¤‰æ•°ã®ãƒã‚¤ãƒ³ã‚¿
+//    receive_message: å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã‚’æ ¼ç´ã™ã‚‹é…åˆ—
+//  [æˆ»ã‚Šå€¤]
+//    ç„¡ã—
+//  [ä½¿ç”¨ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°]
 //    internal_receive_id (R)
 //    internal_receive_dlc (R)
 //    internal_receive_message (R)
-//  [”õl]
-//    ˆê“xóM‚µ‚ÄCŸ‚É‚Ü‚½óM‚·‚é‘O‚É‚±‚ÌŠÖ”‚ğƒR[ƒ‹‚·‚é•K
-//    —v‚ª‚ ‚éD‚»‚¤‚µ‚È‚¯‚ê‚ÎC‘O‚Ìƒf[ƒ^‚Í”jŠü‚³‚ê‚éD
+//  [å‚™è€ƒ]
+//    ä¸€åº¦å—ä¿¡ã—ã¦ï¼Œæ¬¡ã«ã¾ãŸå—ä¿¡ã™ã‚‹å‰ã«ã“ã®é–¢æ•°ã‚’ã‚³ãƒ¼ãƒ«ã™ã‚‹å¿…
+//    è¦ãŒã‚ã‚‹ï¼ãã†ã—ãªã‘ã‚Œã°ï¼Œå‰ã®ãƒ‡ãƒ¼ã‚¿ã¯ç ´æ£„ã•ã‚Œã‚‹ï¼
 //--------------------------------------------------------
 void stm32f3_easy_can_get_receive_message(int *receive_id, int *receive_dlc, unsigned char receive_message[])
 {
@@ -107,19 +107,19 @@ void stm32f3_easy_can_get_receive_message(int *receive_id, int *receive_dlc, uns
 //*********************************************************
 //    stm32f3_easy_can_transmit_message
 //*********************************************************
-//  [ŠT—v]
-//    ƒf[ƒ^‘—M
-//  [ˆø”]
-//    transmit_id     : ‘—Mƒf[ƒ^‚ÌID
-//    transmit_dlc    : óMƒf[ƒ^‚Ì’·‚³
-//    transmit_message: óMƒf[ƒ^
-//  [–ß‚è’l]
-//    0 : ³íI—¹
-//    -1: ‘—Mƒoƒbƒtƒ@‚ª‚¢‚Á‚Ï‚¢‚Å‘—M‚Å‚«‚È‚¢
-//  [g—pƒOƒ[ƒoƒ‹•Ï”]
+//  [æ¦‚è¦]
+//    ãƒ‡ãƒ¼ã‚¿é€ä¿¡
+//  [å¼•æ•°]
+//    transmit_id     : é€ä¿¡ãƒ‡ãƒ¼ã‚¿ã®ID
+//    transmit_dlc    : å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã®é•·ã•
+//    transmit_message: å—ä¿¡ãƒ‡ãƒ¼ã‚¿
+//  [æˆ»ã‚Šå€¤]
+//    0 : æ­£å¸¸çµ‚äº†
+//    -1: é€ä¿¡ãƒãƒƒãƒ•ã‚¡ãŒã„ã£ã±ã„ã§é€ä¿¡ã§ããªã„
+//  [ä½¿ç”¨ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°]
 //    h_easy_can_p (R)
-//  [”õl]
-//    “Á‚É‚È‚µ
+//  [å‚™è€ƒ]
+//    ç‰¹ã«ãªã—
 //--------------------------------------------------------
 int stm32f3_easy_can_transmit_message(int transmit_id, int transmit_dlc, const unsigned char transmit_message[])
 {
@@ -147,26 +147,26 @@ int stm32f3_easy_can_transmit_message(int transmit_id, int transmit_dlc, const u
 //*********************************************************
 //    stm32f3_easy_can_interrupt_handler
 //*********************************************************
-//  [ŠT—v]
-//    óMŠ„‚è‚İƒnƒ“ƒhƒ‰DƒfƒtƒHƒ‹ƒg‚Å‚Í‰½‚à‚µ‚È‚¢D
-//  [ˆø”]
-//    –³‚µ
-//  [–ß‚è’l]
-//    –³‚µ
-//  [g—pƒOƒ[ƒoƒ‹•Ï”]
+//  [æ¦‚è¦]
+//    å—ä¿¡å‰²ã‚Šè¾¼ã¿ãƒãƒ³ãƒ‰ãƒ©ï¼ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ã¯ä½•ã‚‚ã—ãªã„ï¼
+//  [å¼•æ•°]
+//    ç„¡ã—
+//  [æˆ»ã‚Šå€¤]
+//    ç„¡ã—
+//  [ä½¿ç”¨ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°]
 //    h_easy_can_p (R)
-//  [”õl]
-//    óMŠ„‚è‚İ”­¶‚Ìˆ—‚ÍC‚±‚ÌŠÖ”‚ğ•Ê‚ÌêŠ‚Å’è‹`‚µC
-//    ‚»‚Ì’†‚Å‘‚­D
+//  [å‚™è€ƒ]
+//    å—ä¿¡å‰²ã‚Šè¾¼ã¿ç™ºç”Ÿæ™‚ã®å‡¦ç†ã¯ï¼Œã“ã®é–¢æ•°ã‚’åˆ¥ã®å ´æ‰€ã§å®šç¾©ã—ï¼Œ
+//    ãã®ä¸­ã§æ›¸ãï¼
 //--------------------------------------------------------
 __weak void stm32f3_easy_can_interrupt_handler(void)
 {
-	// ƒfƒtƒHƒ‹ƒg‚Å‚Í‰½‚à‚µ‚È‚¢
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ã¯ä½•ã‚‚ã—ãªã„
     return;
 }
 
 //*********************************************************
-//    HALƒhƒ‰ƒCƒo‚ÌŠ„‚è‚İŠÖ”’è‹`
+//    HALãƒ‰ãƒ©ã‚¤ãƒã®å‰²ã‚Šè¾¼ã¿é–¢æ•°å®šç¾©
 //*********************************************************
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
     if(hcan->Instance == h_easy_can_p->Instance)
@@ -175,17 +175,17 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
         unsigned char message[8];
         int i = 0;
 
-        // HALƒhƒ‰ƒCƒo‚©‚çƒf[ƒ^æ“¾
+        // HALãƒ‰ãƒ©ã‚¤ãƒã‹ã‚‰ãƒ‡ãƒ¼ã‚¿å–å¾—
         HAL_CAN_GetRxMessage(h_easy_can_p, CAN_RX_FIFO, &RxHeader, message);
 
-        // ƒf[ƒ^‚ğ“à•”•Ï”‚É“n‚·
+        // ãƒ‡ãƒ¼ã‚¿ã‚’å†…éƒ¨å¤‰æ•°ã«æ¸¡ã™
         internal_receive_id = RxHeader.StdId;
         internal_receive_dlc = RxHeader.DLC;
         for(i = 0; i < 8; i++) {
             internal_receive_message[i] = message[i];
         }
 
-        // óMŠ„‚è‚İƒnƒ“ƒhƒ‰‚ÌƒR[ƒ‹
+        // å—ä¿¡å‰²ã‚Šè¾¼ã¿ãƒãƒ³ãƒ‰ãƒ©ã®ã‚³ãƒ¼ãƒ«
         stm32f3_easy_can_interrupt_handler();
     }
 }
