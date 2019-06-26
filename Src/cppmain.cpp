@@ -115,7 +115,9 @@ void stm32f3_easy_can_interrupt_handler(void)
     else {
         // 受信メッセージをそのまま送信メッセージとする(IDは変える)
     }
+
     // データ送信
+    stm32f3_easy_can_transmit_message(transmit_id, transmit_dlc, transmit_message);
 
 	return;
 }
