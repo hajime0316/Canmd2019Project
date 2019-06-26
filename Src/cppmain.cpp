@@ -110,10 +110,10 @@ void stm32f3_easy_can_interrupt_handler(void)
     //            送信元ID(5bit)  送信先ID(5bit)
 
     if(receive_md_data_type == MD_DATA_TYPE_CONTROL_DATA) {
-        // エンコーダのカウント値を送信データとする
+        // エンコーダのカウント値を送信メッセージとする
     }
     else {
-        // 受信メッセージをそのまま送信メッセージとする(IDは変える)
+        // 受信メッセージをそのまま送信メッセージとする
     }
 
     // データ送信
