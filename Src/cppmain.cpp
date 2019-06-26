@@ -104,6 +104,13 @@ void stm32f3_easy_can_interrupt_handler(void)
     int transmit_id;
     int transmit_dlc;
     unsigned char transmit_message[8];
+    
+    if(receive_md_data_type == MD_DATA_TYPE_CONTROL_DATA) {
+        // エンコーダのカウント値を送信データとする
+    }
+    else {
+        // 受信メッセージをそのまま送信メッセージとする(IDは変える)
+    }
     // データ送信
 
 	return;
