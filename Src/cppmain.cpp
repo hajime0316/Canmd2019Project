@@ -101,7 +101,9 @@ void stm32f3_easy_can_interrupt_handler(void)
         = canmd_manager_set_can_receive_data(receive_message, receive_dlc);
 
     // 送信データ生成
-
+    int transmit_id;
+    int transmit_dlc;
+    unsigned char transmit_message[8];
     // データ送信
 
 	return;
