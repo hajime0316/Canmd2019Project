@@ -97,7 +97,8 @@ void stm32f3_easy_can_interrupt_handler(void)
 	stm32f3_easy_can_get_receive_message(&receive_id, &receive_dlc, receive_message);
 
 	// 受信データ処理
-	canmd_manager_set_can_receive_data(receive_message, receive_dlc);
+    MdDataType receive_md_data_type
+        = canmd_manager_set_can_receive_data(receive_message, receive_dlc);
 
     // 送信データ生成
 
