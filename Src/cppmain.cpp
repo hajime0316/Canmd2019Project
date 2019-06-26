@@ -111,9 +111,17 @@ void stm32f3_easy_can_interrupt_handler(void)
 
     if(receive_md_data_type == MD_DATA_TYPE_CONTROL_DATA) {
         // エンコーダのカウント値を送信メッセージとする
+        transmit_dlc = 3;
+        transmit_message[0] = (MD_DATA_TYPE_CONTROL_DATA << 6) | (divided_enc_cnt[0] >> 5 & 0b111000) | (divided_enc_cnt[1] >> 8 & 0b111);
+        transmit_message[1] = divided_enc_cnt[0] & 0XFF;
+        transmit_message[2] = divided_enc_cnt[1] & 0XFF;
     }
     else {
         // 受信メッセージをそのまま送信メッセージとする
+        transmit_dlc = receive_dlc;
+        for(int i = 0; i < receive_dlc; i++) {
+            transmit_message[i] = receive_message[i];
+        }
     }
 
     // データ送信
