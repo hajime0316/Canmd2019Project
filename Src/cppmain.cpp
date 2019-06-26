@@ -104,7 +104,11 @@ void stm32f3_easy_can_interrupt_handler(void)
     int transmit_id;
     int transmit_dlc;
     unsigned char transmit_message[8];
-    
+
+    // CAN通信の送信ID生成
+    transmit_id = md_id   << 5 | 0b00000 ;
+    //            送信元ID(5bit)  送信先ID(5bit)
+
     if(receive_md_data_type == MD_DATA_TYPE_CONTROL_DATA) {
         // エンコーダのカウント値を送信データとする
     }
