@@ -12,9 +12,9 @@
 #include "main.h"
 
 #ifndef MAX_ENCODER_COUNT
-    #error MAX_ENCODER_COUNT‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñD\
-           CubeMX‚Ì[User Constants]‚Å‚±‚Ìƒ}ƒNƒ’è\
-           ”‚ğ’è‹`‚µ‚Ä‚­‚¾‚³‚¢D
+    #error MAX_ENCODER_COUNTãŒå®šç¾©ã•ã‚Œã¦ã„ã¾ã›ã‚“ï¼\
+           CubeMXã®[User Constants]ã§ã“ã®ãƒã‚¯ãƒ­å®š\
+           æ•°ã‚’å®šç¾©ã—ã¦ãã ã•ã„ï¼
 #endif
 
 Stm32f3Velocity::Stm32f3Velocity(const TIM_HandleTypeDef *htim) {
