@@ -61,6 +61,7 @@ void Error_Handler(void);
 #define PWM_PERIOD 200
 #define PWM_DUTY_ZERO 100
 #define PWM_DUTY_MAX 95
+#define MAX_ENCODER_COUNT 2000
 #define DIP_SW_1_Pin GPIO_PIN_13
 #define DIP_SW_1_GPIO_Port GPIOC
 #define DIP_SW_2_Pin GPIO_PIN_14
