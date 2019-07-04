@@ -21,6 +21,9 @@ Stm32f3Velocity::Stm32f3Velocity(const TIM_HandleTypeDef *htim) {
     this->htim = htim;
     this->velocity = 0;
     this->past_encoder_count = htim->Instance->CNT;
+    
+    // ハードウェアスタート
+    HAL_TIM_Encoder_Start((TIM_HandleTypeDef *)htim, TIM_CHANNEL_ALL);
 }
 
 Stm32f3Velocity::~Stm32f3Velocity() {
