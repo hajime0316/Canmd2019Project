@@ -7,6 +7,7 @@
 #include "gpio.h"
 
 #include "stm32f3_easy_can.h"
+#include "stm32f3_velocity.hpp"
 #include "canmd_manager.h"
 #include "stm32f3_printf.h"
 
@@ -97,7 +98,41 @@ void stm32f3_easy_can_interrupt_handler(void)
 	stm32f3_easy_can_get_receive_message(&receive_id, &receive_dlc, receive_message);
 
 	// 受信データ処理
-	canmd_manager_set_can_receive_data(receive_message, receive_dlc);
+    MdDataType receive_md_data_type
+        = canmd_manager_set_can_receive_data(receive_message, receive_dlc);
+
+    // 送信データ生成
+    int transmit_id;
+    int transmit_dlc;
+    unsigned char transmit_message[8];
+
+    // CAN通信の送信ID生成
+    transmit_id = md_id   << 5 | 0b00000 ;
+    //            送信元ID(5bit)  送信先ID(5bit)
+
+    if(receive_md_data_type != MD_DATA_TYPE_CONTROL_DATA) {
+        // 受信メッセージをそのまま送信メッセージとする
+        transmit_dlc = receive_dlc;
+        for(int i = 0; i < receive_dlc; i++) {
+            transmit_message[i] = receive_message[i];
+        }
+    }
+    else {
+        // エンコーダのカウント値を送信メッセージとする
+        static Stm32f3Velocity divided_encoder_count[2] = {&htim2, &htim3};
+        for(int i = 0; i < 2; i++) {
+            divided_encoder_count[i].periodic_calculate_velocity();
+        }
+        transmit_dlc = 3;
+        transmit_message[0] = (MD_DATA_TYPE_CONTROL_DATA             << 6           )
+                            | (divided_encoder_count[0].get_velocity() >> 5 & 0b111000)
+                            | (divided_encoder_count[1].get_velocity() >> 8 & 0b111   );
+        transmit_message[1] = divided_encoder_count[0].get_velocity() & 0XFF;
+        transmit_message[2] = divided_encoder_count[1].get_velocity() & 0XFF;
+    }
+
+    // データ送信
+    stm32f3_easy_can_transmit_message(transmit_id, transmit_dlc, transmit_message);
 
 	return;
 }
