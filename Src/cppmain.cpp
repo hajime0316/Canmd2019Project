@@ -10,6 +10,7 @@
 #include "stm32f3_velocity.hpp"
 #include "canmd_manager.h"
 #include "stm32f3_printf.h"
+#include "stm32f3_antiphase_pwm.hpp"
 
 static int md_id = 0;
 
@@ -67,11 +68,17 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		// モータコントロールデータ取得
 		canmd_manager_get_motor_control_data(motor_control_data);
 
+		// PWMのデューティー比計算
+        double duty_rate[2];
+        duty_rate[0] = motor_control_data[0] / (double)MOTOR_CONTROL_DATA_MAX; 
+        duty_rate[1] = motor_control_data[1] / (double)MOTOR_CONTROL_DATA_MAX; 
+
 		// PWMのデューティー比更新
-		TIM8->CCR1 = PWM_DUTY_ZERO + PWM_DUTY_MAX * motor_control_data[0] / (double)MOTOR_CONTROL_DATA_MAX;
-		TIM8->CCR2 = PWM_DUTY_ZERO - PWM_DUTY_MAX * motor_control_data[0] / (double)MOTOR_CONTROL_DATA_MAX;
-		TIM1->CCR1 = PWM_DUTY_ZERO + PWM_DUTY_MAX * motor_control_data[1] / (double)MOTOR_CONTROL_DATA_MAX;
-		TIM1->CCR2 = PWM_DUTY_ZERO - PWM_DUTY_MAX * motor_control_data[1] / (double)MOTOR_CONTROL_DATA_MAX;
+        static Stm32f3AntiphasePwm pwm0(&htim8);
+        static Stm32f3AntiphasePwm pwm1(&htim1);
+
+        pwm0.update_duty(duty_rate[0]);
+        pwm1.update_duty(duty_rate[1]);
 	}
 
 	// 約180msecタイマ
