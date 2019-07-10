@@ -77,7 +77,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         static Stm32f3AntiphasePwm pwm1(&htim1);
 
         pwm0.update_duty(duty_rate[0]);
-        pwm0.update_duty(duty_rate[1]);
+        pwm1.update_duty(duty_rate[1]);
 	}
 
 	// 約180msecタイマ
