@@ -32,9 +32,17 @@ typedef volatile struct{
     
 }Ps3;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void ps3_init(void);                        // 初期化関数．最初にこの関数を実行しなければならない
 void ps3_uart_interrupt_routine(unsigned char uart_buff[], int data_size);	// UART割り込み関数内でこれを実行．
 void ps3_get_data(Ps3 *ps3_data);           // 現在のコントローラの値を取得
 int ps3_time_out_check(void);               // タイムアウトチェック(100ms間隔ぐらいで実行)
+
+#ifdef __cplusplus
+};
+#endif
 
 #endif /* PS3_H */
