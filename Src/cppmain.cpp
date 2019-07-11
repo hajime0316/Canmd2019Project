@@ -93,6 +93,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		motor_control_data[0] = left_stick;
         motor_control_data[1] = right_stick;
 
+        // 速度計算
+        static Stm32f3Velocity velocity[2] = {&htim2, &htim3};
+        for(int i = 0; i < 2; i++){
+            velocity[i].periodic_calculate_velocity();
+        }
+
 		// PWMのデューティー比計算
         double duty_rate[2];
         duty_rate[0] = motor_control_data[0] / (double)MOTOR_CONTROL_DATA_MAX; 
