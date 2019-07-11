@@ -144,3 +144,14 @@ void stm32f3_easy_can_interrupt_handler(void)
 
 	return;
 }
+
+//*********************************************************
+//    UART割り込み関数
+//*********************************************************
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(huart->Instance == huart3.Instance) {
+		ps3_uart_interrupt_routine(uart3_buf, 8);
+		HAL_UART_Receive_IT(&huart3, uart3_buf, 8);
+	}
+}
