@@ -52,29 +52,29 @@ void ps3_uart_interrupt_routine(unsigned char uart_buff[], int data_size)
 	int i = 0;
 	int check_sum = 0;
 
-	// uartƒoƒbƒtƒ@‚Éƒf[ƒ^‚ª‚ ‚éŠÔƒ‹[ƒv
+	// uartãƒãƒƒãƒ•ã‚¡ã«ãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚‹é–“ãƒ«ãƒ¼ãƒ—
 	for(i = 0; i < data_size; i++) {
-		// ƒXƒ^[ƒgƒeƒLƒXƒg(ST)ŒŸo
+		// ã‚¹ã‚¿ãƒ¼ãƒˆãƒ†ã‚­ã‚¹ãƒˆ(ST)æ¤œå‡º
 		if(uart_buff[i] == 0x80){
 			ps3_buff_cnt = 0;
 		}
 
-		// uartƒoƒbƒtƒ@‚©‚çCps3ƒoƒbƒtƒ@‚Öƒf[ƒ^‚ğˆÚ“®
+		// uartãƒãƒƒãƒ•ã‚¡ã‹ã‚‰ï¼Œps3ãƒãƒƒãƒ•ã‚¡ã¸ãƒ‡ãƒ¼ã‚¿ã‚’ç§»å‹•
 		ps3_buff[ps3_buff_cnt] = uart_buff[i];
 
-		// 1ƒtƒŒ[ƒ€óM‚µ‚½‚±‚Æ‚ğŠm”F
+		// 1ãƒ•ãƒ¬ãƒ¼ãƒ å—ä¿¡ã—ãŸã“ã¨ã‚’ç¢ºèª
 		if(ps3_buff_cnt == 7) {
-			// ƒ`ƒFƒbƒNƒTƒ€‚ÌŒvZ
+			// ãƒã‚§ãƒƒã‚¯ã‚µãƒ ã®è¨ˆç®—
 			check_sum = 0;
 			for(i = 1; i < 7; i++) {
 				check_sum = (check_sum + ps3_buff[i]) & 0X7F;
 			}
 
-			if(ps3_buff[7] == check_sum) {		// ƒ`ƒFƒbƒNƒTƒ€‚ª‚ ‚Á‚Ä‚¢‚ê‚ÎCƒf[ƒ^XV
-				// ƒRƒ“ƒgƒ[ƒ‰‚Ì’lƒNƒŠƒA
+			if(ps3_buff[7] == check_sum) {		// ãƒã‚§ãƒƒã‚¯ã‚µãƒ ãŒã‚ã£ã¦ã„ã‚Œã°ï¼Œãƒ‡ãƒ¼ã‚¿æ›´æ–°
+				// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã®å€¤ã‚¯ãƒªã‚¢
 				ps3_clear();
 
-				// ãƒ{ƒ^ƒ“C‰ºƒ{ƒ^ƒ“CƒXƒ^[ƒgƒ{ƒ^ƒ“‚ÌXV
+				// ä¸Šãƒœã‚¿ãƒ³ï¼Œä¸‹ãƒœã‚¿ãƒ³ï¼Œã‚¹ã‚¿ãƒ¼ãƒˆãƒœã‚¿ãƒ³ã®æ›´æ–°
 				if(((ps3_buff[2] >> 1) & 1) && (ps3_buff[2] & 1)) {
 					internal_ps3_data.start = 1;
 				}
@@ -85,7 +85,7 @@ void ps3_uart_interrupt_routine(unsigned char uart_buff[], int data_size)
 					internal_ps3_data.down = 1;
 				}
 
-				// ‰Eƒ{ƒ^ƒ“C¶ƒ{ƒ^ƒ“CƒZƒŒƒNƒgƒ{ƒ^ƒ“‚ÌXV
+				// å³ãƒœã‚¿ãƒ³ï¼Œå·¦ãƒœã‚¿ãƒ³ï¼Œã‚»ãƒ¬ã‚¯ãƒˆãƒœã‚¿ãƒ³ã®æ›´æ–°
 				if(((ps3_buff[2] >> 2) & 1) && ((ps3_buff[2] >> 3) & 1)){
 					internal_ps3_data.select = 1;
 				}else if((ps3_buff[2] >> 2) & 1){
@@ -94,7 +94,7 @@ void ps3_uart_interrupt_routine(unsigned char uart_buff[], int data_size)
 					internal_ps3_data.left = 1;
 				}
 
-				// ƒTƒ“ƒJƒNCƒVƒJƒNCƒ}ƒ‹Cƒoƒc‚ÌXV
+				// ã‚µãƒ³ã‚«ã‚¯ï¼Œã‚·ã‚«ã‚¯ï¼Œãƒãƒ«ï¼Œãƒãƒ„ã®æ›´æ–°
 				if((ps3_buff[2] >> 4) & 1){
 					internal_ps3_data.sankaku = 1;
 				}
@@ -108,7 +108,7 @@ void ps3_uart_interrupt_routine(unsigned char uart_buff[], int data_size)
 					internal_ps3_data.shikaku = 1;
 				}
 
-				// L1, L2, R1, R2‚ÌXV
+				// L1, L2, R1, R2ã®æ›´æ–°
 				if((ps3_buff[1] >> 1)& 1){
 					internal_ps3_data.L1 = 1;
 				}
@@ -122,21 +122,21 @@ void ps3_uart_interrupt_routine(unsigned char uart_buff[], int data_size)
 					internal_ps3_data.R2 = 1;
 				}
 
-				// ƒXƒeƒBƒbƒN‚ÌXV
+				// ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®æ›´æ–°
 				internal_ps3_data.left_analog_updown = ps3_buff[4];
 				internal_ps3_data.left_analog_rightleft = ps3_buff[3];
 				internal_ps3_data.right_analog_updown = ps3_buff[6];
 				internal_ps3_data.right_analog_rightleft = ps3_buff[5];
                 
-                // ƒ^ƒCƒ€ƒAƒEƒgƒ`ƒFƒbƒNƒtƒ‰ƒOƒNƒŠƒA
+                // ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆãƒã‚§ãƒƒã‚¯ãƒ•ãƒ©ã‚°ã‚¯ãƒªã‚¢
                 time_out_check_flg = 0;
 			}
 		}
-		else {		// ƒ`ƒFƒbƒNƒTƒ€‚ªŠÔˆá‚Á‚Ä‚¢‚½ê‡C‰½‚à‚µ‚È‚¢D‚±‚ÌƒtƒŒ[ƒ€‚Í”jŠü‚³‚ê‚éD
+		else {		// ãƒã‚§ãƒƒã‚¯ã‚µãƒ ãŒé–“é•ã£ã¦ã„ãŸå ´åˆï¼Œä½•ã‚‚ã—ãªã„ï¼ã“ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã¯ç ´æ£„ã•ã‚Œã‚‹ï¼
 			;
 		}
 
-		// ps3ƒoƒbƒtƒ@‚ÌƒJƒEƒ“ƒg‚ğƒCƒ“ƒNƒŠƒƒ“ƒg(8ˆÈã‚É‚È‚ç‚È‚¢‚æ‚¤‚É‚·‚é)
+		// ps3ãƒãƒƒãƒ•ã‚¡ã®ã‚«ã‚¦ãƒ³ãƒˆã‚’ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ(8ä»¥ä¸Šã«ãªã‚‰ãªã„ã‚ˆã†ã«ã™ã‚‹)
 		if(ps3_buff_cnt < 8) {
 			ps3_buff_cnt++;
 		}
@@ -153,7 +153,7 @@ void ps3_get_data(Ps3 *ps3_data)
 int ps3_time_out_check(void) {
     int res = 0;
     
-    if(time_out_check_flg == 1) {   // ƒ^ƒCƒ€ƒAƒEƒgˆ—
+    if(time_out_check_flg == 1) {   // ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆå‡¦ç†
         ps3_clear();
         res = 1;
     }

@@ -10,7 +10,7 @@
 #define PS3_H
 
 typedef volatile struct{
-	// ƒRƒ“ƒgƒ[ƒ‰‚Ì’lŠi”[
+	// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã®å€¤æ ¼ç´
     char up;
     char down;
     char right;
@@ -32,9 +32,9 @@ typedef volatile struct{
     
 }Ps3;
 
-void ps3_init(void);                        // ‰Šú‰»ŠÖ”DÅ‰‚É‚±‚ÌŠÖ”‚ğÀs‚µ‚È‚¯‚ê‚Î‚È‚ç‚È‚¢
-void ps3_uart_interrupt_routine(unsigned char uart_buff[], int data_size);	// UARTŠ„‚è‚İŠÖ”“à‚Å‚±‚ê‚ğÀsD
-void ps3_get_data(Ps3 *ps3_data);           // Œ»İ‚ÌƒRƒ“ƒgƒ[ƒ‰‚Ì’l‚ğæ“¾
-int ps3_time_out_check(void);               // ƒ^ƒCƒ€ƒAƒEƒgƒ`ƒFƒbƒN(100msŠÔŠu‚®‚ç‚¢‚ÅÀs)
+void ps3_init(void);                        // åˆæœŸåŒ–é–¢æ•°ï¼æœ€åˆã«ã“ã®é–¢æ•°ã‚’å®Ÿè¡Œã—ãªã‘ã‚Œã°ãªã‚‰ãªã„
+void ps3_uart_interrupt_routine(unsigned char uart_buff[], int data_size);	// UARTå‰²ã‚Šè¾¼ã¿é–¢æ•°å†…ã§ã“ã‚Œã‚’å®Ÿè¡Œï¼
+void ps3_get_data(Ps3 *ps3_data);           // ç¾åœ¨ã®ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã®å€¤ã‚’å–å¾—
+int ps3_time_out_check(void);               // ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆãƒã‚§ãƒƒã‚¯(100msé–“éš”ãã‚‰ã„ã§å®Ÿè¡Œ)
 
 #endif /* PS3_H */
