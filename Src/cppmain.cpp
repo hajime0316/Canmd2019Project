@@ -14,6 +14,7 @@
 #include "ps3.h"
 
 static int md_id = 0;
+static uint8_t uart3_buf[8];
 
 void setup(void) {
     // md_id初期化
@@ -28,10 +29,12 @@ void setup(void) {
     }
     // ソフトウェアモジュール初期化
     canmd_manager_init();
+    ps3_init();
     // ハードウェアモジュールスタート
     //// 通信関係
     stm32f3_printf_init(&huart3);
     stm32f3_easy_can_init(&hcan, md_id, 0X7FF);
+    HAL_UART_Receive_IT(&huart3, uart3_buf, 8);
     //// PWM
     HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
