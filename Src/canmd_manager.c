@@ -60,10 +60,10 @@ void canmd_manager_init(void)
 //    receive_data    : 受信データ
 //    receive_data_len: 受信データの長さ
 //  [戻り値]
-//    MD_DATA_TYPE_MOTOR_SETUP_DATA_0   : 受信データはMOTOR_SETUP_DATA_0
-//    MD_DATA_TYPE_MOTOR_SETUP_DATA_1   : 受信データはMOTOR_SETUP_DATA_1
+//    MD_DATA_TYPE_MOTOR_0_SETUP_DATA   : 受信データはMOTOR_0_SETUP_DATA
+//    MD_DATA_TYPE_MOTOR_1_SETUP_DATA   : 受信データはMOTOR_1_SETUP_DATA
 //    MD_DATA_TYPE_TIME_PARAM           : 受信データはPID_PARAM
-//    MD_DATA_TYPE_CONTROL_DATA         : 受信データはCONTROL_DATA
+//    MD_DATA_TYPE_MOTOR_CONTROL_DATA   : 受信データはMOTOR_CONTROL_DATA
 //  [使用グローバル変数]
 //    internal_motor_setup_data (W)
 //    internal_motor_control_data (W)
@@ -78,7 +78,7 @@ MdDataType canmd_manager_set_can_receive_data(const unsigned char receive_data[]
     md_data_type = (receive_data[0] >> 6) & 0b11;
     
     switch(md_data_type) {
-        case MD_DATA_TYPE_MOTOR_SETUP_DATA_0:
+        case MD_DATA_TYPE_MOTOR_0_SETUP_DATA:
             if(receive_data_len == 4) {
                 internal_motor_setup_data[0].kp = receive_data[1];
                 internal_motor_setup_data[0].ki = receive_data[2];
@@ -87,7 +87,7 @@ MdDataType canmd_manager_set_can_receive_data(const unsigned char receive_data[]
             
             break;
             
-        case MD_DATA_TYPE_MOTOR_SETUP_DATA_1:
+        case MD_DATA_TYPE_MOTOR_1_SETUP_DATA:
             if(receive_data_len == 4) {
                 internal_motor_setup_data[1].kp = receive_data[1];
                 internal_motor_setup_data[1].ki = receive_data[2];
@@ -100,7 +100,7 @@ MdDataType canmd_manager_set_can_receive_data(const unsigned char receive_data[]
             
             break;
             
-        case MD_DATA_TYPE_CONTROL_DATA:
+        case MD_DATA_TYPE_MOTOR_CONTROL_DATA:
             if(receive_data_len == 3) {
                 
                 if((receive_data[0] >> 5 & 1) == 0) {
