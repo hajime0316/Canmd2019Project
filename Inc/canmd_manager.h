@@ -26,7 +26,7 @@ typedef enum tag_MotorControlMode {
 
 typedef struct tag_MotorSetupData {
     MotorControlMode control_mode;  // PIDコントローラを有効化するかどうか
-    unsigned char kp, ki, kd;       // PID制御時のゲイン(0 ～ 255)
+    int kp, ki, kd;                 // PID制御時のゲイン(0 ～ 255)
 } MotorSetupData;
 
 #ifdef __cplusplus
