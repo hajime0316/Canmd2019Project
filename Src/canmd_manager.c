@@ -164,7 +164,7 @@ void canmd_manager_get_motor_setup_data(MotorSetupData motor_setup_data[2])
 //  [備考]
 //    特になし
 //--------------------------------------------------------
-void canmd_manager_get_motor_control_data(int motor_control_data[])
+void canmd_manager_get_motor_control_data(int motor_control_data[2])
 {
     motor_control_data[0] = internal_motor_control_data[0];
     motor_control_data[1] = internal_motor_control_data[1];
