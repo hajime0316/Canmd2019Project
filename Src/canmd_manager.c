@@ -80,27 +80,23 @@ MdDataType canmd_manager_set_can_receive_data(const unsigned char receive_data[]
     switch(md_data_type) {
         case MD_DATA_TYPE_PID_GAIN_0:
             if(receive_data_len == 4) {
-                internal_md_init_data.kp[0] = receive_data[1] / 10.0;
-                internal_md_init_data.ki[0] = receive_data[2] / 10.0;
-                internal_md_init_data.kd[0] = receive_data[3] / 10.0;
+                internal_motor_setup_data[0].kp = receive_data[1];
+                internal_motor_setup_data[0].ki = receive_data[2];
+                internal_motor_setup_data[0].kd = receive_data[3];
             }
             
             break;
             
         case MD_DATA_TYPE_PID_GAIN_1:
             if(receive_data_len == 4) {
-                internal_md_init_data.kp[1] = receive_data[1] / 10.0;
-                internal_md_init_data.ki[1] = receive_data[2] / 10.0;
-                internal_md_init_data.kd[1] = receive_data[3] / 10.0;
+                internal_motor_setup_data[1].kp = receive_data[1];
+                internal_motor_setup_data[1].ki = receive_data[2];
+                internal_motor_setup_data[1].kd = receive_data[3];
             }
 
             break;
             
         case MD_DATA_TYPE_TIME_PARAM:
-            if(receive_data_len == 3) {
-                internal_md_init_data.control_loop_time_scale = receive_data[1] / 10.0;
-                internal_md_init_data.pwm_period_scale = receive_data[2];
-            }
             
             break;
             
