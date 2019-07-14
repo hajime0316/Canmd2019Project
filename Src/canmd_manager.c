@@ -36,10 +36,10 @@ void canmd_manager_init(void)
     int i = 0;
     
     for(i = 0; i < 2; i++) {
-        internal_motor_setup_data[i].control_mode = UNDEFINED;
-        internal_motor_setup_data[i].kp = PID_GAIN_UNDEFINED;
-        internal_motor_setup_data[i].ki = PID_GAIN_UNDEFINED;
-        internal_motor_setup_data[i].kd = PID_GAIN_UNDEFINED;
+        internal_motor_setup_data[i].control_mode = UNDEFINED_CONTROL_MODE;
+        internal_motor_setup_data[i].kp = UNDEFINED_PID_GAIN;
+        internal_motor_setup_data[i].ki = UNDEFINED_PID_GAIN;
+        internal_motor_setup_data[i].kd = UNDEFINED_PID_GAIN;
     }
     
     for(i = 0; i < 2; i++) {
