@@ -10,19 +10,23 @@
 
 #define MOTOR_CONTROL_DATA_MAX 1023
 
-typedef struct tag_MdInitData {
-    double kp[2], ki[2], kd[2];     // 送られてきたデータを10で割る
-    int control_loop_time_scale;    // 
-    int pwm_period_scale;           // 
-    int enable_pid_controller_flg;  // PIDコントローラを有効化するかどうか
-} MdInitData;
-
 typedef enum tag_MdDataType {
     MD_DATA_TYPE_PID_GAIN_0 = 0b00,
     MD_DATA_TYPE_PID_GAIN_1 = 0b01,
     MD_DATA_TYPE_TIME_PARAM = 0b10,
     MD_DATA_TYPE_CONTROL_DATA = 0b11,
 } MdDataType;
+
+typedef enum tag_MotorControlMode {
+    UNDEFINED,
+    DUTY_RATE_MODE,
+    PID_MODE,
+}MotorControlMode;
+
+typedef struct tag_MotorSetupData {
+    MotorControlMode control_mode;  // PIDコントローラを有効化するかどうか
+    unsigned char kp, ki, kd;       // PID制御時のゲイン(0 ～ 255)
+} MotorSetupData;
 
 #ifdef __cplusplus
 extern "C" {
