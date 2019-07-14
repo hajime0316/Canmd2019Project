@@ -127,16 +127,17 @@ MdDataType canmd_manager_set_can_receive_data(const unsigned char receive_data[]
 }
 
 //*********************************************************
-//    canmd_manager_get_md_init_data
+//    canmd_manager_get_motor_setup_data
 //*********************************************************
 //  [概要]
-//    MD初期化データの取得
+//    モーターセットアップデータを取得
 //  [引数]
-//    md_init_data: MD初期化データを格納する構造体のポインタ 
+//    motor_setup_data: モーターセットアップデータを格納するた
+//                      めの配列のポインタ
 //  [戻り値]
 //    無し
 //  [使用グローバル変数]
-//    internal_md_init_data (R)
+//    internal_motor_setup_data (R)
 //  [備考]
 //    特になし
 //--------------------------------------------------------
