@@ -52,7 +52,7 @@ void canmd_manager_init(void)
 }
 
 //*********************************************************
-//    canmd_manager_get_can_receive_data
+//    canmd_manager_set_can_receive_data
 //*********************************************************
 //  [概要]
 //    CAN通信で受信したデータをセット
@@ -60,12 +60,12 @@ void canmd_manager_init(void)
 //    receive_data    : 受信データ
 //    receive_data_len: 受信データの長さ
 //  [戻り値]
-//    MD_DATA_TYPE_MOTOR_SETUP_DATA_0   : 受信データはPID_GAIN_0
-//    MD_DATA_TYPE_MOTOR_SETUP_DATA_1   : 受信データはPID_GAIN_1
-//    MD_DATA_TYPE_TIME_PARAM   : 受信データはPID_PARAM
-//    MD_DATA_TYPE_CONTROL_DATA: 受信データはPID_CONTROL_DATA
+//    MD_DATA_TYPE_MOTOR_SETUP_DATA_0   : 受信データはMOTOR_SETUP_DATA_0
+//    MD_DATA_TYPE_MOTOR_SETUP_DATA_1   : 受信データはMOTOR_SETUP_DATA_1
+//    MD_DATA_TYPE_TIME_PARAM           : 受信データはPID_PARAM
+//    MD_DATA_TYPE_CONTROL_DATA         : 受信データはCONTROL_DATA
 //  [使用グローバル変数]
-//    internal_md_init_data (W)
+//    internal_motor_setup_data (W)
 //    internal_motor_control_data (W)
 //    motor_control_data_receive_flg (W)
 //  [備考]
