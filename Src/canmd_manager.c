@@ -25,7 +25,7 @@ static int motor_control_data_receive_flg;          // モーターコントロ�
 //  [戻り値]
 //    無し
 //  [使用グローバル変数]
-//    internal_md_init_data (W)
+//    internal_motor_setup_data (W)
 //    internal_motor_control_data (W)
 //    motor_control_data_receive_flg (W)
 //  [備考]
