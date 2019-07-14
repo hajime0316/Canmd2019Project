@@ -36,12 +36,11 @@ void canmd_manager_init(void)
     int i = 0;
     
     for(i = 0; i < 2; i++) {
-        internal_md_init_data.kp[i] = -1;
-        internal_md_init_data.ki[i] = -1;
-        internal_md_init_data.kd[i] = -1;
+        internal_motor_setup_data[i].control_mode = UNDEFINED;
+        internal_motor_setup_data[i].kp = -1;
+        internal_motor_setup_data[i].ki = -1;
+        internal_motor_setup_data[i].kd = -1;
     }
-    internal_md_init_data.control_loop_time_scale = -1;
-    internal_md_init_data.pwm_period_scale = -1;
     
     for(i = 0; i < 2; i++) {
         internal_motor_control_data[i] = 0;
