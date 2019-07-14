@@ -140,9 +140,11 @@ MdDataType canmd_manager_set_can_receive_data(const unsigned char receive_data[]
 //  [備考]
 //    特になし
 //--------------------------------------------------------
-void canmd_manager_get_md_init_data(MdInitData *md_init_data)
+void canmd_manager_get_motor_setup_data(MotorSetupData motor_setup_data[2])
 {
-    *md_init_data = internal_md_init_data;
+    for(int i = 0; i < 2; i++) {
+        motor_setup_data[i] = internal_motor_setup_data[i];
+    }
     
     return;
 }
