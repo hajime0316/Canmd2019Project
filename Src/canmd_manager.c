@@ -37,9 +37,9 @@ void canmd_manager_init(void)
     
     for(i = 0; i < 2; i++) {
         internal_motor_setup_data[i].control_mode = UNDEFINED;
-        internal_motor_setup_data[i].kp = -1;
-        internal_motor_setup_data[i].ki = -1;
-        internal_motor_setup_data[i].kd = -1;
+        internal_motor_setup_data[i].kp = PID_GAIN_UNDEFINED;
+        internal_motor_setup_data[i].ki = PID_GAIN_UNDEFINED;
+        internal_motor_setup_data[i].kd = PID_GAIN_UNDEFINED;
     }
     
     for(i = 0; i < 2; i++) {

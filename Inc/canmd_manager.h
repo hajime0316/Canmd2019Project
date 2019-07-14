@@ -9,6 +9,7 @@
 #define CANMD_MANAGER_H
 
 #define MOTOR_CONTROL_DATA_MAX 1023
+#define PID_GAIN_UNDEFINED -1
 
 typedef enum tag_MdDataType {
     MD_DATA_TYPE_PID_GAIN_0 = 0b00,
