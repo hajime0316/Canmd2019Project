@@ -34,7 +34,7 @@ extern "C" {
 
 void canmd_manager_init(void);
 MdDataType canmd_manager_set_can_receive_data(const unsigned char receive_data[], int receive_data_len);
-void canmd_manager_get_md_init_data(MdInitData *md_init_data);
+void canmd_manager_get_motor_setup_data(MotorSetupData md_init_data[2]);
 void canmd_manager_get_motor_control_data(int motor_control_data[]);
 int canmd_manager_get_control_data_receive_flg(void);
 int canmd_manager_time_out_check(void);
