@@ -11,7 +11,7 @@
 //*********************************************************
 //    グローバル変数
 //*********************************************************
-static MdInitData internal_md_init_data;            // MD初期化データ
+static MotorSetupData internal_motor_setup_data[2]; // モーターセットアップデータ
 static int internal_motor_control_data[2];          // モーターコントロールデータ
 static int motor_control_data_receive_flg;          // モーターコントロールデータ受信フラグ
 
