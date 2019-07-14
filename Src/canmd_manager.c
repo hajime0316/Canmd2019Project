@@ -222,32 +222,3 @@ int canmd_manager_time_out_check(void)
         return 1;
     }
 }
-
-//*********************************************************
-//    canmd_manager_time_out_check
-//*********************************************************
-//  [概要]
-//    モーターコントロールデータ受信のタイムアウトチェック
-//  [引数]
-//    無し
-//  [戻り値]
-//    0: 正常終了
-//    1: タイムアウト
-//  [使用グローバル変数]
-//    motor_control_data_receive_flg (R/W)
-//    internal_motor_control_data(W)
-//  [備考]
-//    100ms間隔で定期的にコールする
-//--------------------------------------------------------
-int canmd_manager_set_velocity_data(void)
-{
-    if(motor_control_data_receive_flg == 1) {
-        motor_control_data_receive_flg = 0;
-        return 0;
-    }
-    else {
-        internal_motor_control_data[0] = 0;
-        internal_motor_control_data[1] = 0;
-        return 1;
-    }
-}
