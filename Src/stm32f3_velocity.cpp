@@ -36,10 +36,10 @@ int Stm32f3Velocity::periodic_calculate_velocity(void) {
     velocity = present_encoder_count - past_encoder_count;
 
     if(velocity > MAX_ENCODER_COUNT / 2) {
-        velocity -= MAX_ENCODER_COUNT;
+        velocity -= (MAX_ENCODER_COUNT + 1);
     }
     else if(velocity < -(MAX_ENCODER_COUNT / 2)) {
-        velocity += MAX_ENCODER_COUNT;
+        velocity += (MAX_ENCODER_COUNT + 1);
     }
 
     past_encoder_count = present_encoder_count;
