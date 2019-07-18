@@ -13,10 +13,6 @@
 
 class Pid {
     private:
-
-    public:
-        Pid();
-        ~Pid();
         //各誤差
         double p_error=0;
         double i_error=0;
@@ -30,14 +26,21 @@ class Pid {
         //目的のデータ
         double ideal_data=0;
 
-        //エンコーダの値を保持する変数
+        //エンコーダの値
         double enc=0;
 
-        //目的とエンコーダの値の差を保持する変数
+        //目的とエンコーダの値の差
         double diff_data = ideal_data - enc;
 
-        //前のdiff_dataの値を保持する変数
+        //１つ前のdiff_dataの値
         double prev_diff_data=0;
+
+    public:
+        //コンストラクタ
+        Pid();
+
+        //デストラクタ
+        ~Pid();
         
         //ゲインの取得
         void set_gain(double, double, double);
