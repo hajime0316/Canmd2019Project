@@ -7,7 +7,7 @@ CAN通信でアクセス出来て，モーター速度をPID制御できるMDの
 ## HOW TO USE `Pid` CLASS
 ### How functions are used
 
- function | how to move 
+ function | remarks
 --|:--
 `Pid()` | コンストラクタの引数は無し
 `~Pid()` | デストラクタの引数は無し
@@ -18,3 +18,4 @@ CAN通信でアクセス出来て，モーター速度をPID制御できるMDの
 `pid_cal()` | 最新の誤差でモーターコントロールデータをPID処理した値を返す
 
 > TODO? : classの変数の値を表示する関数
+>         README内の関数や引数の型の追加
