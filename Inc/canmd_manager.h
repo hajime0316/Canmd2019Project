@@ -39,7 +39,7 @@ void canmd_manager_get_motor_setup_data(MotorSetupData motor_setup_data[2]);
 void canmd_manager_get_motor_control_data(int motor_control_data[2]);
 int canmd_manager_get_control_data_receive_flg(void);
 int canmd_manager_time_out_check(void);
-int canmd_manager_is_all_setup_data_received(void);
+int canmd_manager_is_motor_setup_data_received(void);
 
 #ifdef __cplusplus
 };

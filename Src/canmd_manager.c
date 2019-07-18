@@ -248,7 +248,7 @@ int canmd_manager_time_out_check(void)
 //  [備考]
 //    特になし
 //--------------------------------------------------------
-int canmd_manager_is_all_setup_data_received(void) {
+int canmd_manager_is_motor_setup_data_received(void) {
     for(int i = 0; i < 2; i++) {
         if(internal_motor_setup_data[i].control_mode == UNDEFINED_CONTROL_MODE) return 0;
         else if(internal_motor_setup_data[i].control_mode == PID_MODE) {
