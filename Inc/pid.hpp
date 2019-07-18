@@ -14,9 +14,9 @@
 class Pid {
     private:
         //各誤差
-        double p_error=0;
-        double i_error=0;
-        double d_error=0;
+        int p_error=0;
+        int i_error=0;
+        int d_error=0;
 
         //ゲイン
         double Kp=0;
@@ -24,16 +24,16 @@ class Pid {
         double Kd=0;
 
         //目的のデータ
-        double ideal_data=0;
+        int ideal_data=0;
 
         //エンコーダの値
-        double enc=0;
+        int enc=0;
 
         //目的とエンコーダの値の差
-        double diff_data = ideal_data - enc;
+        int diff_data = ideal_data - enc;
 
         //１つ前のdiff_dataの値
-        double prev_diff_data=0;
+        int prev_diff_data=0;
 
     public:
         //コンストラクタ
@@ -46,10 +46,10 @@ class Pid {
         void set_gain(double, double, double);
 
         //エンコーダの値の取得
-        void get_enc(double);
+        void get_enc(int);
 
         //モーターコントロールデータの値の取得
-        void get_ideal(double);
+        void get_ideal(int);
         
         //誤差の更新
         void update_errors();
