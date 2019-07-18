@@ -41,8 +41,13 @@ void setup(void) {
     HAL_TIM_PWM_Start(&htim8,TIM_CHANNEL_2);
     HAL_TIMEx_PWMN_Start(&htim8, TIM_CHANNEL_2);
     //// タイミングリソース
-    HAL_TIM_Base_Start_IT(&htim6);
     HAL_TIM_Base_Start_IT(&htim7);
+
+    // セットアップルーチン
+    
+
+    // 制御則スタート
+    HAL_TIM_Base_Start_IT(&htim6);
 }
 
 void loop(void) {
