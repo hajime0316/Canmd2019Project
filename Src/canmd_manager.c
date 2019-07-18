@@ -232,3 +232,32 @@ int canmd_manager_time_out_check(void)
         return 1;
     }
 }
+
+//*********************************************************
+//    canmd_manager_is_all_setup_data_received
+//*********************************************************
+//  [概要]
+//    motor_setup_dataが適切に受信されたかどうか
+//  [引数]
+//    なし
+//  [戻り値]
+//    0: 偽
+//    1: 真
+//  [使用グローバル変数]
+//    internal_motor_setup_data (R)
+//  [備考]
+//    特になし
+//--------------------------------------------------------
+int canmd_manager_is_all_setup_data_received(void) {
+    for(int i = 0; i < 2; i++) {
+        if(internal_motor_setup_data[i].control_mode == UNDEFINED_CONTROL_MODE) return 0;
+        else if(internal_motor_setup_data[i].control_mode == PID_MODE) {
+            if (
+                internal_motor_setup_data[i].kp == UNDEFINED_PID_GAIN                ||
+                internal_motor_setup_data[i].ki == UNDEFINED_PID_GAIN                ||
+                internal_motor_setup_data[i].kd == UNDEFINED_PID_GAIN
+            ) return 0;
+        }
+    }
+    return 1;
+}
