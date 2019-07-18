@@ -37,13 +37,10 @@ class Pid {
 
     public:
         //コンストラクタ
-        Pid();
+        Pid(double, double, double);
 
         //デストラクタ
         ~Pid();
-        
-        //ゲインの取得
-        void set_gain(double, double, double);
 
         //エンコーダの値の取得
         void get_enc(int);
