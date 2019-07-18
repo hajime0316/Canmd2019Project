@@ -12,6 +12,7 @@
 #include "stm32f3_printf.h"
 #include "stm32f3_antiphase_pwm.hpp"
 #include "ps3.h"
+#include "pid.hpp"
 
 static int md_id = 0;
 static uint8_t uart3_buf[8];
@@ -97,6 +98,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         static Stm32f3Velocity velocity[2] = {&htim2, &htim3};
         for(int i = 0; i < 2; i++){
             velocity[i].periodic_calculate_velocity();
+        }
+
+        static Pid pid[2];
+        for(int i = 0; i < 2; i++){
+            pid[i].get_ideal(motor_control_data);
+            pid[i].get_enc(velocity[i].get_velocity());
+            pid[i].update_errors();
+            motor_control_data[i] = pid[i].pid_cal();
         }
 
 		// PWMのデューティー比計算
