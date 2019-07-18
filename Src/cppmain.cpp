@@ -44,7 +44,20 @@ void setup(void) {
     HAL_TIM_Base_Start_IT(&htim7);
 
     // セットアップルーチン
-    
+    MotorSetupData motor_setup_data[2];
+    while(1) {
+        canmd_manager_get_motor_setup_data(motor_setup_data);
+        for(int i = 0; i < 2; i++) {
+            if( motor_setup_data[i].control_mode == UNDEFINED_CONTROL_MODE  ||
+                motor_setup_data[i].kp == UNDEFINED_PID_GAIN                ||
+                motor_setup_data[i].ki == UNDEFINED_PID_GAIN                ||
+                motor_setup_data[i].kd == UNDEFINED_PID_GAIN
+            ) {
+                continue;
+            }
+        }
+        break;
+    }
 
     // 制御則スタート
     HAL_TIM_Base_Start_IT(&htim6);
