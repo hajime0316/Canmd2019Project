@@ -17,8 +17,15 @@ class Pid {
     public:
         Pid();
         ~Pid();
+        //各誤差の宣言
+        double p_error=0;
+        double i_error=0;
+        double d_error=0;
+
         //ゲインの宣言
-        double Kp=0,Ki=0,Kd=0;
+        double Kp=0;
+        double Ki=0;
+        double Kd=0;
         //目的のデータの宣言
         double ideal_data=0;
         //エンコーダの値を保持する変数の宣言
@@ -32,6 +39,9 @@ class Pid {
 
         //モーターコントロールデータの値の取得
         void get_ideal(double);
+        
+        //誤差の更新
+        void update_errors();
         
         //PID処理
         double pid_cal();
