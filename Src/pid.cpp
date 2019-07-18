@@ -9,22 +9,20 @@
 #include "pid.hpp"
 #include "main.h"
 
-Pid::Pid(){
-}
-Pid::~Pid() {
-}
-
-void Pid::set_gain(double Kp_, double Ki_, double Kd_){
+Pid::Pid(double Kp_, double Ki_, double Kd_){
     Kp = Kp_;
     Ki = Ki_;
     Kd = Kd_;
 }
 
-void Pid::get_enc(double enc_){
+Pid::~Pid() {
+}
+
+void Pid::get_enc(int enc_){
     enc = enc_;
 }
 
-void Pid::get_ideal(double ideal_data_){
+void Pid::get_ideal(int ideal_data_){
     ideal_data = ideal_data_;
 }
 
