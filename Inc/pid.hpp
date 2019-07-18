@@ -19,6 +19,8 @@ class Pid {
         ~Pid();
         //ゲインの宣言
         double Kp=0,Ki=0,Kd=0;
+        //目的のデータの宣言
+        double ideal_data=0;
         //エンコーダの値を保持する変数の宣言
         double enc=0;
 
@@ -27,9 +29,12 @@ class Pid {
 
         //エンコーダの値の取得
         void get_enc(double);
+
+        //モーターコントロールデータの値の取得
+        void get_ideal(double);
         
         //PID処理
-        double pid_cal(double);
+        double pid_cal();
 };
 
 
