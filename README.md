@@ -7,7 +7,7 @@ CAN通信でアクセス出来て，モーター速度をPID制御できるMDの
 ## HOW TO USE `Pid` CLASS
 ### How functions are used
 Please use these functions like 
-`Pid::function` .
+`InstanceOfPid.function` .
 
  function | remarks
 --|:--
