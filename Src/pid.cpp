@@ -29,13 +29,15 @@ void Pid::get_ideal(double ideal_data_){
 }
 
 void Pid::update_errors(){
-    d_error = ideal_data - enc;
-    p_error = enc;
-    i_error += enc;
+    d_error = diff_data - prev_diff_data;
+    p_error = diff_data;
+    i_error += diff_data;
+
+    prev_diff_data = diff_data;
 }
 
 double Pid::pid_cal(){
     double total_error;
     total_error = Kp*p_error + Ki*i_error + Kd*d_error;
-    return ideal_data + total_error;
+    return enc + total_error;
 }
