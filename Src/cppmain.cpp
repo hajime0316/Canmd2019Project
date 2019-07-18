@@ -100,9 +100,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
             velocity[i].periodic_calculate_velocity();
         }
 
-        static Pid pid[2];
+        static Pid pid[2] = {   Pid(1,2,0.6),
+                                Pid(1.2,2.2,1)
+                            };
         for(int i = 0; i < 2; i++){
-            pid[i].get_ideal(motor_control_data);
+            pid[i].get_ideal(motor_control_data[i]);
             pid[i].get_enc(velocity[i].get_velocity());
             pid[i].update_errors();
             motor_control_data[i] = pid[i].pid_cal();
@@ -114,11 +116,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         duty_rate[1] = motor_control_data[1] / (double)MOTOR_CONTROL_DATA_MAX; 
 
 		// PWMのデューティー比更新
-        static Stm32f3AntiphasePwm pwm0(&htim8);
+        static Stm32f3AntiphasePwm pwm[2] = {&htim8, &htim1};
         static Stm32f3AntiphasePwm pwm1(&htim1);
-
-        pwm0.update_duty(duty_rate[0]);
-        pwm1.update_duty(duty_rate[1]);
+        for(int i = 0; i < 2; i++){
+            pwm[i].update_duty(duty_rate[i]);
+        }
 	}
 
 	// 約180msecタイマ
