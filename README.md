@@ -6,16 +6,17 @@ CAN通信でアクセス出来て，モーター速度をPID制御できるMDの
 2019/07/18 written by SIVA
 ## HOW TO USE `Pid` CLASS
 ### How functions are used
+Please use these functions like 
+`Pid::function` .
 
  function | remarks
 --|:--
 `Pid()` | コンストラクタの引数は無し
 `~Pid()` | デストラクタの引数は無し
-`set_gain(Kp,Ki,Kd)` | 引数の順番でゲインを取得
-`get_enc(enc)` | 引数の値をエンコーダの値として取得
-`get_ideal(ideal_data)` | 引数の値をモーターコントロールデータ（コントローラ）の値として取得
-`update_errors()` | 入力データとエンコーダの値の誤差を計算
-`pid_cal()` | 最新の誤差でモーターコントロールデータをPID処理した値を返す
+`void set_gain(double Kp,double Ki,double Kd)` | 左の引数の順番でゲインを取得
+`void get_enc(double)` | 引数の値をエンコーダの値として取得
+`void get_ideal(double)` | 引数の値をモーターコントロールデータ（コントローラ）の値として取得
+`void update_errors()` | 入力データとエンコーダの値の誤差を計算
+`double pid_cal()` | 最新の誤差でモーターコントロールデータをPID処理した値を返す
 
-> TODO? : classの変数の値を表示する関数
->         README内の関数や引数の型の追加
+> TODO? : classの変数の値を表示する
