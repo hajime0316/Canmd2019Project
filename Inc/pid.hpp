@@ -19,6 +19,8 @@ class Pid {
         ~Pid();
         //ゲインの宣言
         double Kp=0,Ki=0,Kd=0;
+        //エンコーダの値を保持する変数の宣言
+        double enc=0;
 
         //ゲインの取得
         void set_gain(double, double, double);
