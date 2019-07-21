@@ -19,6 +19,8 @@ Stm32f3AntiphasePwm::~Stm32f3AntiphasePwm() {
 }
 
 void Stm32f3AntiphasePwm::update_duty(double duty_rate){
+    if(duty_rate > 1) return;
+    
     double difference;
     difference = PWM_DUTY_MAX * duty_rate;
     htim->Instance->CCR1 = PWM_DUTY_ZERO + difference;
