@@ -9,7 +9,6 @@
 #include "stm32f3_easy_can.h"
 #include "stm32f3_velocity.hpp"
 #include "canmd_manager.h"
-#include "stm32f3_printf.h"
 #include "stm32f3_antiphase_pwm.hpp"
 #include "ps3.h"
 
@@ -32,7 +31,6 @@ void setup(void) {
     ps3_init();
     // ハードウェアモジュールスタート
     //// 通信関係
-    stm32f3_printf_init(&huart3);
     stm32f3_easy_can_init(&hcan, md_id, 0X7FF);
     HAL_UART_Receive_IT(&huart3, uart3_buf, 8);
     //// PWM
@@ -50,14 +48,6 @@ void setup(void) {
 }
 
 void loop(void) {
-    int motor_control_data[2];
-    // モーターコントロールデータ取得
-    canmd_manager_get_motor_control_data(motor_control_data);
-
-    // デバッグ出力
-    stm32f3_printf("%5d  %5d  ", motor_control_data[0], motor_control_data[1]);
-    stm32f3_printf("%3d", md_id);
-    stm32f3_printf("\r\n");
 }
 
 //**************************
