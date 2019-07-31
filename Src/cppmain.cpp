@@ -81,8 +81,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		}
 
 		// モータコントロールデータ取得
-		motor_control_data[0] = left_stick;
-        motor_control_data[1] = right_stick;
+		motor_control_data[0] = left_stick/2;
+        motor_control_data[1] = right_stick/2;
 
         // 速度計算
         static Stm32f3Velocity velocity[2] = {&htim2, &htim3};
@@ -91,7 +91,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         }
 
         //PID制御
-        static Pid pid[2] = {{1,0,0},{1,0,0}};
+        static Pid pid[2] = {{10,0,2},{1,0,0}};
         for(int i = 0; i < 2; i++){
             pid[i].get_enc(velocity[i].get_velocity());
             pid[i].get_ideal(motor_control_data[i]);
