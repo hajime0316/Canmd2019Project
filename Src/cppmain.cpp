@@ -9,10 +9,11 @@
 #include "stm32f3_easy_can.h"
 #include "stm32f3_velocity.hpp"
 #include "canmd_manager.h"
-#include "stm32f3_printf.h"
 #include "stm32f3_antiphase_pwm.hpp"
+#include "ps3.h"
 
 static int md_id = 0;
+static uint8_t uart3_buf[8];
 
 void setup(void) {
     // md_id初期化
@@ -27,10 +28,11 @@ void setup(void) {
     }
     // ソフトウェアモジュール初期化
     canmd_manager_init();
+    ps3_init();
     // ハードウェアモジュールスタート
     //// 通信関係
-    stm32f3_printf_init(&huart3);
     stm32f3_easy_can_init(&hcan, md_id, 0X7FF);
+    HAL_UART_Receive_IT(&huart3, uart3_buf, 8);
     //// PWM
     HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
     HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
@@ -46,14 +48,6 @@ void setup(void) {
 }
 
 void loop(void) {
-    int motor_control_data[2];
-    // モーターコントロールデータ取得
-    canmd_manager_get_motor_control_data(motor_control_data);
-
-    // デバッグ出力
-    stm32f3_printf("%5d  %5d  ", motor_control_data[0], motor_control_data[1]);
-    stm32f3_printf("%3d", md_id);
-    stm32f3_printf("\r\n");
 }
 
 //**************************
@@ -64,9 +58,36 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	// 5msecタイマ
 	if(htim->Instance == TIM6) {
 		int motor_control_data[2] = {};
+        Ps3 ps3_data;
+        int left_stick = 0;
+		int right_stick = 0;
+
+        // コントローラのデータ更新
+		ps3_get_data(&ps3_data);
+		// コントローラのstickの値更新(stickの値は- ～ 95の間で変化)
+		if(ps3_data.left_analog_updown >= 64) {
+		  left_stick = (ps3_data.left_analog_updown - 64) * 1023 / 63;
+		}
+		else {
+		  left_stick = (ps3_data.left_analog_updown - 64) * 1023 / 64;
+		}
+
+		if(ps3_data.right_analog_updown >= 64) {
+		  right_stick = (ps3_data.right_analog_updown - 64) * 1023 / 63;
+		}
+		else {
+		  right_stick = (ps3_data.right_analog_updown - 64) * 1023 / 64;
+		}
 
 		// モータコントロールデータ取得
-		canmd_manager_get_motor_control_data(motor_control_data);
+		motor_control_data[0] = left_stick;
+        motor_control_data[1] = right_stick;
+
+        // 速度計算
+        static Stm32f3Velocity velocity[2] = {&htim2, &htim3};
+        for(int i = 0; i < 2; i++){
+            velocity[i].periodic_calculate_velocity();
+        }
 
 		// PWMのデューティー比計算
         double duty_rate[2];
@@ -142,4 +163,15 @@ void stm32f3_easy_can_interrupt_handler(void)
     stm32f3_easy_can_transmit_message(transmit_id, transmit_dlc, transmit_message);
 
 	return;
+}
+
+//*********************************************************
+//    UART割り込み関数
+//*********************************************************
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(huart->Instance == huart3.Instance) {
+		ps3_uart_interrupt_routine(uart3_buf, 8);
+		HAL_UART_Receive_IT(&huart3, uart3_buf, 8);
+	}
 }
