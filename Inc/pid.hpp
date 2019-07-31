@@ -11,6 +11,8 @@
 
 #include "stm32f3xx_hal.h"
 
+#define DEFAULT_LOOP_TIME 0.005
+
 class Pid {
     private:
         //各誤差
@@ -29,11 +31,14 @@ class Pid {
         //エンコーダの値
         int enc=0;
 
-        //目的とエンコーダの値の差
-        int diff_data = ideal_data - enc;
-
         //１つ前のdiff_dataの値
         int prev_diff_data=0;
+
+        //モーターの速度
+        int velocity=0;
+
+        //ループタイム 
+        double loop_time = DEFAULT_LOOP_TIME;
 
     public:
         //コンストラクタ

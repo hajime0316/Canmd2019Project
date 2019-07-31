@@ -27,6 +27,7 @@ void Pid::get_ideal(int ideal_data_){
 }
 
 void Pid::update_errors(){
+    int diff_data = ideal_data - enc;
     d_error = diff_data - prev_diff_data;
     p_error = diff_data;
     i_error += diff_data;
@@ -36,6 +37,7 @@ void Pid::update_errors(){
 
 double Pid::pid_cal(){
     double total_error;
-    total_error = Kp*p_error + Ki*i_error + Kd*d_error;
-    return enc + total_error;
+    total_error = Kp*p_error + Ki*i_error*loop_time + Kd*d_error;
+    velocity = velocity + total_error*loop_time;
+    return velocity;
 }
