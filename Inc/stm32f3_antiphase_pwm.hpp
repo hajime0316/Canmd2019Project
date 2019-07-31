@@ -19,7 +19,7 @@ class Stm32f3AntiphasePwm {
         Stm32f3AntiphasePwm(const TIM_HandleTypeDef *htim);
         ~Stm32f3AntiphasePwm();
 
-        void update_duty(double duty_rate);
+        int update_duty(double duty_rate);
 };
 
 
