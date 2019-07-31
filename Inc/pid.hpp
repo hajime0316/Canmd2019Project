@@ -29,9 +29,6 @@ class Pid {
         //エンコーダの値
         int enc=0;
 
-        //目的とエンコーダの値の差
-        int diff_data = ideal_data - enc;
-
         //１つ前のdiff_dataの値
         int prev_diff_data=0;
 

@@ -27,6 +27,7 @@ void Pid::get_ideal(int ideal_data_){
 }
 
 void Pid::update_errors(){
+    int diff_data = ideal_data - enc;
     d_error = diff_data - prev_diff_data;
     p_error = diff_data;
     i_error += diff_data;
