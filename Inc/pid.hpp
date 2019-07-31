@@ -32,6 +32,9 @@ class Pid {
         //１つ前のdiff_dataの値
         int prev_diff_data=0;
 
+        //モーターの速度
+        int velocity=0;
+
     public:
         //コンストラクタ
         Pid(double, double, double);
