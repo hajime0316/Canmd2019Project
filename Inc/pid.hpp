@@ -11,6 +11,8 @@
 
 #include "stm32f3xx_hal.h"
 
+#define DEFAULT_LOOP_TIME 0.005
+
 class Pid {
     private:
         //各誤差
@@ -34,6 +36,9 @@ class Pid {
 
         //モーターの速度
         int velocity=0;
+
+        //ループタイム 
+        double loop_time = DEFAULT_LOOP_TIME;
 
     public:
         //コンストラクタ

@@ -37,6 +37,7 @@ void Pid::update_errors(){
 
 double Pid::pid_cal(){
     double total_error;
-    total_error = Kp*p_error + Ki*i_error + Kd*d_error;
-    return enc + total_error;
+    total_error = Kp*p_error + Ki*i_error*loop_time + Kd*d_error;
+    velocity = velocity + total_error*loop_time;
+    return velocity;
 }
