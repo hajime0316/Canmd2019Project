@@ -40,13 +40,6 @@ class Pid {
         //ループタイム 
         double loop_time_ = DEFAULT_LOOP_TIME;
 
-    public:
-        //コンストラクタ
-        Pid(double, double, double);
-
-        //デストラクタ
-        ~Pid();
-
         //エンコーダの値の取得
         void set_enc(int);
 
@@ -56,8 +49,15 @@ class Pid {
         //誤差の更新
         void update_errors();
 
+    public:
+        //コンストラクタ
+        Pid(double, double, double);
+
+        //デストラクタ
+        ~Pid();
+
         //PID処理
-        double pid_calc();
+        double pid_calc(int, int);
 };
 
 
