@@ -16,29 +16,29 @@
 class Pid {
     private:
         //各誤差
-        int p_error=0;
-        int i_error=0;
-        int d_error=0;
+        int p_error_=0;
+        int i_error_=0;
+        int d_error_=0;
 
         //ゲイン
-        double Kp=0;
-        double Ki=0;
-        double Kd=0;
+        double Kp_=0;
+        double Ki_=0;
+        double Kd_=0;
 
         //目的のデータ
-        int ideal_data=0;
+        int control_data_=0;
 
         //エンコーダの値
-        int enc=0;
+        int enc_=0;
 
         //１つ前のdiff_dataの値
-        int prev_diff_data=0;
+        int prev_diff_data_=0;
 
         //モーターの速度
-        int velocity=0;
+        int velocity_=0;
 
         //ループタイム 
-        double loop_time = DEFAULT_LOOP_TIME;
+        double loop_time_ = DEFAULT_LOOP_TIME;
 
     public:
         //コンストラクタ
@@ -48,16 +48,16 @@ class Pid {
         ~Pid();
 
         //エンコーダの値の取得
-        void get_enc(int);
+        void set_enc(int);
 
         //モーターコントロールデータの値の取得
-        void get_ideal(int);
+        void set_control_data(int);
         
         //誤差の更新
         void update_errors();
 
         //PID処理
-        double pid_cal();
+        double pid_calc();
 };
 
 

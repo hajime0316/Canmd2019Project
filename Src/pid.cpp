@@ -9,35 +9,35 @@
 #include "pid.hpp"
 #include "main.h"
 
-Pid::Pid(double Kp_, double Ki_, double Kd_){
-    Kp = Kp_;
-    Ki = Ki_;
-    Kd = Kd_;
+Pid::Pid(double Kp, double Ki, double Kd){
+    Kp_ = Kp;
+    Ki_ = Ki;
+    Kd_ = Kd;
 }
 
 Pid::~Pid() {
 }
 
-void Pid::get_enc(int enc_){
-    enc = enc_;
+void Pid::set_enc(int enc){
+    enc_ = enc;
 }
 
-void Pid::get_ideal(int ideal_data_){
-    ideal_data = ideal_data_;
+void Pid::set_control_data(int control_data){
+    control_data_ = control_data;
 }
 
 void Pid::update_errors(){
-    int diff_data = ideal_data - enc;
-    d_error = diff_data - prev_diff_data;
-    p_error = diff_data;
-    i_error += diff_data;
+    int diff_data = control_data_ - enc_;
+    d_error_ = diff_data - prev_diff_data_;
+    p_error_ = diff_data;
+    i_error_ += diff_data;
 
-    prev_diff_data = diff_data;
+    prev_diff_data_ = diff_data;
 }
 
-double Pid::pid_cal(){
+double Pid::pid_calc(){
     double total_error;
-    total_error = Kp*p_error + Ki*i_error*loop_time + Kd*d_error;
-    velocity = velocity + total_error*loop_time;
-    return velocity;
+    total_error = Kp_*p_error_ + Ki_*i_error_*loop_time_ + Kd_*d_error_;
+    velocity_ = velocity_ + total_error*loop_time_;
+    return velocity_;
 }
