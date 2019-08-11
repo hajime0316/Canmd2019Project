@@ -98,7 +98,7 @@ MdDataType canmd_manager_set_can_receive_data(const unsigned char receive_data[]
                 internal_motor_setup_data[1].kp = receive_data[1];
                 internal_motor_setup_data[1].ki = receive_data[2];
                 internal_motor_setup_data[1].kd = receive_data[3];
-                if((receive_data[1] & 1) == 0) {
+                if((receive_data[0] & 1) == 0) {
                     internal_motor_setup_data[1].control_mode = DUTY_RATE_MODE;
                 }
                 else {
