@@ -102,11 +102,16 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
             case PID_MODE:
                 // TODO
                 // ここにPID制御の制御則を実装する．
-                motor_control_data[i] = 0;
+                for (int i = 0; i < 2; i++) {
+                    duty_rate[i] = 0;
+                }
+                
                 break;
 
             default:
-                motor_control_data[i] = 0;
+                for (int i = 0; i < 2; i++) {
+                    duty_rate[i] = 0;
+                }
                 break;
             }
             
