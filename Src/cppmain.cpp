@@ -95,8 +95,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
             switch (motor_setup_data[i].control_mode)
             {
             case DUTY_RATE_MODE:
-                duty_rate[0] = motor_control_data[0] / (double)MOTOR_CONTROL_DATA_MAX; 
-                duty_rate[1] = motor_control_data[1] / (double)MOTOR_CONTROL_DATA_MAX; 
+                for (int i = 0; i < 2; i++) {
+                    duty_rate[i] = motor_control_data[i] / (double)MOTOR_CONTROL_DATA_MAX; 
+                }
                 break;
             
             case PID_MODE:
