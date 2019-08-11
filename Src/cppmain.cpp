@@ -84,10 +84,31 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		// モータコントロールデータ取得
 		canmd_manager_get_motor_control_data(motor_control_data);
 
-		// PWMのデューティー比計算
+        // PWMのデューティー比計算
         double duty_rate[2];
-        duty_rate[0] = motor_control_data[0] / (double)MOTOR_CONTROL_DATA_MAX; 
-        duty_rate[1] = motor_control_data[1] / (double)MOTOR_CONTROL_DATA_MAX; 
+        //// モーターセットアップデータの取得
+        MotorSetupData motor_setup_data[2];
+        canmd_manager_get_motor_setup_data(motor_setup_data);
+        for (int i = 0; i < 2; i++)
+        {
+            //// モーターコントロールモードによってduty比の決め方を分ける
+            switch (motor_setup_data[i].control_mode)
+            {
+            case DUTY_RATE_MODE:
+                duty_rate[0] = motor_control_data[0] / (double)MOTOR_CONTROL_DATA_MAX; 
+                duty_rate[1] = motor_control_data[1] / (double)MOTOR_CONTROL_DATA_MAX; 
+                break;
+            
+            case PID_MODE:
+                motor_control_data[i] = 0;
+                break;
+
+            default:
+                motor_control_data[i] = 0;
+                break;
+            }
+            
+        }
 
 		// PWMのデューティー比更新
         static Stm32f3AntiphasePwm pwm0(&htim8);
