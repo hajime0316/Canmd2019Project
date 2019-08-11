@@ -41,18 +41,34 @@ void setup(void) {
     HAL_TIM_PWM_Start(&htim8,TIM_CHANNEL_2);
     HAL_TIMEx_PWMN_Start(&htim8, TIM_CHANNEL_2);
     //// タイミングリソース
-    HAL_TIM_Base_Start_IT(&htim6);
     HAL_TIM_Base_Start_IT(&htim7);
+
+    // セットアップルーチン
+    while(!canmd_manager_is_motor_setup_data_received());
+    stm32f3_printf("Setup routine was finished!");
+
+    // 制御則スタート
+    HAL_TIM_Base_Start_IT(&htim6);
 }
 
 void loop(void) {
     int motor_control_data[2];
+    MotorSetupData motor_setup_data[2];
     // モーターコントロールデータ取得
     canmd_manager_get_motor_control_data(motor_control_data);
+    // PID制御のゲイン取得
+    canmd_manager_get_motor_setup_data(motor_setup_data);
 
     // デバッグ出力
     stm32f3_printf("%5d  %5d  ", motor_control_data[0], motor_control_data[1]);
-    stm32f3_printf("%3d", md_id);
+    stm32f3_printf("%3d  ", md_id);
+    for(int i = 0; i < 2; i++) {
+        stm32f3_printf("|  ");
+        stm32f3_printf("%2d  ",motor_setup_data[i].control_mode);
+        stm32f3_printf("%4d  ", motor_setup_data[i].kp);
+        stm32f3_printf("%4d  ", motor_setup_data[i].ki);
+        stm32f3_printf("%4d  ", motor_setup_data[i].kd);
+    }
     stm32f3_printf("\r\n");
 }
 
@@ -117,7 +133,7 @@ void stm32f3_easy_can_interrupt_handler(void)
     transmit_id = md_id   << 5 | 0b00000 ;
     //            送信元ID(5bit)  送信先ID(5bit)
 
-    if(receive_md_data_type != MD_DATA_TYPE_CONTROL_DATA) {
+    if(receive_md_data_type != MD_DATA_TYPE_MOTOR_CONTROL_DATA) {
         // 受信メッセージをそのまま送信メッセージとする
         transmit_dlc = receive_dlc;
         for(int i = 0; i < receive_dlc; i++) {
@@ -131,7 +147,7 @@ void stm32f3_easy_can_interrupt_handler(void)
             divided_encoder_count[i].periodic_calculate_velocity();
         }
         transmit_dlc = 3;
-        transmit_message[0] = (MD_DATA_TYPE_CONTROL_DATA             << 6           )
+        transmit_message[0] = (MD_DATA_TYPE_MOTOR_CONTROL_DATA             << 6           )
                             | (divided_encoder_count[0].get_velocity() >> 5 & 0b111000)
                             | (divided_encoder_count[1].get_velocity() >> 8 & 0b111   );
         transmit_message[1] = divided_encoder_count[0].get_velocity() & 0XFF;

@@ -11,7 +11,7 @@
 //*********************************************************
 //    グローバル変数
 //*********************************************************
-static MdInitData internal_md_init_data;            // MD初期化データ
+static MotorSetupData internal_motor_setup_data[2]; // モーターセットアップデータ
 static int internal_motor_control_data[2];          // モーターコントロールデータ
 static int motor_control_data_receive_flg;          // モーターコントロールデータ受信フラグ
 
@@ -25,7 +25,7 @@ static int motor_control_data_receive_flg;          // モーターコントロ�
 //  [戻り値]
 //    無し
 //  [使用グローバル変数]
-//    internal_md_init_data (W)
+//    internal_motor_setup_data (W)
 //    internal_motor_control_data (W)
 //    motor_control_data_receive_flg (W)
 //  [備考]
@@ -36,12 +36,11 @@ void canmd_manager_init(void)
     int i = 0;
     
     for(i = 0; i < 2; i++) {
-        internal_md_init_data.kp[i] = -1;
-        internal_md_init_data.ki[i] = -1;
-        internal_md_init_data.kd[i] = -1;
+        internal_motor_setup_data[i].control_mode = UNDEFINED_CONTROL_MODE;
+        internal_motor_setup_data[i].kp = UNDEFINED_PID_GAIN;
+        internal_motor_setup_data[i].ki = UNDEFINED_PID_GAIN;
+        internal_motor_setup_data[i].kd = UNDEFINED_PID_GAIN;
     }
-    internal_md_init_data.control_loop_time_scale = -1;
-    internal_md_init_data.pwm_period_scale = -1;
     
     for(i = 0; i < 2; i++) {
         internal_motor_control_data[i] = 0;
@@ -53,7 +52,7 @@ void canmd_manager_init(void)
 }
 
 //*********************************************************
-//    canmd_manager_get_can_receive_data
+//    canmd_manager_set_can_receive_data
 //*********************************************************
 //  [概要]
 //    CAN通信で受信したデータをセット
@@ -61,12 +60,12 @@ void canmd_manager_init(void)
 //    receive_data    : 受信データ
 //    receive_data_len: 受信データの長さ
 //  [戻り値]
-//    MD_DATA_TYPE_PID_GAIN_0   : 受信データはPID_GAIN_0
-//    MD_DATA_TYPE_PID_GAIN_1   : 受信データはPID_GAIN_1
-//    MD_DATA_TYPE_TIME_PARAM   : 受信データはPID_PARAM
-//    MD_DATA_TYPE_CONTROL_DATA: 受信データはPID_CONTROL_DATA
+//    MD_DATA_TYPE_MOTOR_0_SETUP_DATA   : 受信データはMOTOR_0_SETUP_DATA
+//    MD_DATA_TYPE_MOTOR_1_SETUP_DATA   : 受信データはMOTOR_1_SETUP_DATA
+//    MD_DATA_TYPE_TIME_PARAM           : 受信データはPID_PARAM
+//    MD_DATA_TYPE_MOTOR_CONTROL_DATA   : 受信データはMOTOR_CONTROL_DATA
 //  [使用グローバル変数]
-//    internal_md_init_data (W)
+//    internal_motor_setup_data (W)
 //    internal_motor_control_data (W)
 //    motor_control_data_receive_flg (W)
 //  [備考]
@@ -79,33 +78,41 @@ MdDataType canmd_manager_set_can_receive_data(const unsigned char receive_data[]
     md_data_type = (receive_data[0] >> 6) & 0b11;
     
     switch(md_data_type) {
-        case MD_DATA_TYPE_PID_GAIN_0:
+        case MD_DATA_TYPE_MOTOR_0_SETUP_DATA:
             if(receive_data_len == 4) {
-                internal_md_init_data.kp[0] = receive_data[1] / 10.0;
-                internal_md_init_data.ki[0] = receive_data[2] / 10.0;
-                internal_md_init_data.kd[0] = receive_data[3] / 10.0;
+                internal_motor_setup_data[0].kp = receive_data[1];
+                internal_motor_setup_data[0].ki = receive_data[2];
+                internal_motor_setup_data[0].kd = receive_data[3];
+                if((receive_data[0] & 1) == 0) {
+                    internal_motor_setup_data[0].control_mode = DUTY_RATE_MODE;
+                }
+                else {
+                    internal_motor_setup_data[0].control_mode = PID_MODE;
+                }
             }
             
             break;
             
-        case MD_DATA_TYPE_PID_GAIN_1:
+        case MD_DATA_TYPE_MOTOR_1_SETUP_DATA:
             if(receive_data_len == 4) {
-                internal_md_init_data.kp[1] = receive_data[1] / 10.0;
-                internal_md_init_data.ki[1] = receive_data[2] / 10.0;
-                internal_md_init_data.kd[1] = receive_data[3] / 10.0;
+                internal_motor_setup_data[1].kp = receive_data[1];
+                internal_motor_setup_data[1].ki = receive_data[2];
+                internal_motor_setup_data[1].kd = receive_data[3];
+                if((receive_data[1] & 1) == 0) {
+                    internal_motor_setup_data[1].control_mode = DUTY_RATE_MODE;
+                }
+                else {
+                    internal_motor_setup_data[1].control_mode = PID_MODE;
+                }
             }
 
             break;
             
         case MD_DATA_TYPE_TIME_PARAM:
-            if(receive_data_len == 3) {
-                internal_md_init_data.control_loop_time_scale = receive_data[1] / 10.0;
-                internal_md_init_data.pwm_period_scale = receive_data[2];
-            }
             
             break;
             
-        case MD_DATA_TYPE_CONTROL_DATA:
+        case MD_DATA_TYPE_MOTOR_CONTROL_DATA:
             if(receive_data_len == 3) {
                 
                 if((receive_data[0] >> 5 & 1) == 0) {
@@ -132,22 +139,25 @@ MdDataType canmd_manager_set_can_receive_data(const unsigned char receive_data[]
 }
 
 //*********************************************************
-//    canmd_manager_get_md_init_data
+//    canmd_manager_get_motor_setup_data
 //*********************************************************
 //  [概要]
-//    MD初期化データの取得
+//    モーターセットアップデータを取得
 //  [引数]
-//    md_init_data: MD初期化データを格納する構造体のポインタ 
+//    motor_setup_data: モーターセットアップデータを格納するた
+//                      めの配列のポインタ
 //  [戻り値]
 //    無し
 //  [使用グローバル変数]
-//    internal_md_init_data (R)
+//    internal_motor_setup_data (R)
 //  [備考]
 //    特になし
 //--------------------------------------------------------
-void canmd_manager_get_md_init_data(MdInitData *md_init_data)
+void canmd_manager_get_motor_setup_data(MotorSetupData motor_setup_data[2])
 {
-    *md_init_data = internal_md_init_data;
+    for(int i = 0; i < 2; i++) {
+        motor_setup_data[i] = internal_motor_setup_data[i];
+    }
     
     return;
 }
@@ -166,7 +176,7 @@ void canmd_manager_get_md_init_data(MdInitData *md_init_data)
 //  [備考]
 //    特になし
 //--------------------------------------------------------
-void canmd_manager_get_motor_control_data(int motor_control_data[])
+void canmd_manager_get_motor_control_data(int motor_control_data[2])
 {
     motor_control_data[0] = internal_motor_control_data[0];
     motor_control_data[1] = internal_motor_control_data[1];
@@ -224,30 +234,30 @@ int canmd_manager_time_out_check(void)
 }
 
 //*********************************************************
-//    canmd_manager_time_out_check
+//    canmd_manager_is_all_setup_data_received
 //*********************************************************
 //  [概要]
-//    モーターコントロールデータ受信のタイムアウトチェック
+//    motor_setup_dataが適切に受信されたかどうか
 //  [引数]
-//    無し
+//    なし
 //  [戻り値]
-//    0: 正常終了
-//    1: タイムアウト
+//    0: 偽
+//    1: 真
 //  [使用グローバル変数]
-//    motor_control_data_receive_flg (R/W)
-//    internal_motor_control_data(W)
+//    internal_motor_setup_data (R)
 //  [備考]
-//    100ms間隔で定期的にコールする
+//    特になし
 //--------------------------------------------------------
-int canmd_manager_set_velocity_data(void)
-{
-    if(motor_control_data_receive_flg == 1) {
-        motor_control_data_receive_flg = 0;
-        return 0;
+int canmd_manager_is_motor_setup_data_received(void) {
+    for(int i = 0; i < 2; i++) {
+        if(internal_motor_setup_data[i].control_mode == UNDEFINED_CONTROL_MODE) return 0;
+        else if(internal_motor_setup_data[i].control_mode == PID_MODE) {
+            if (
+                internal_motor_setup_data[i].kp == UNDEFINED_PID_GAIN                ||
+                internal_motor_setup_data[i].ki == UNDEFINED_PID_GAIN                ||
+                internal_motor_setup_data[i].kd == UNDEFINED_PID_GAIN
+            ) return 0;
+        }
     }
-    else {
-        internal_motor_control_data[0] = 0;
-        internal_motor_control_data[1] = 0;
-        return 1;
-    }
+    return 1;
 }
