@@ -46,12 +46,13 @@ int Pid::check_value(){
 
 double Pid::pid_calc(int enc, int control_data){
     double total_error;
-    
-    //変数の値のチェック
-    if(check_value() < 0) return 0;
 
     set_enc(enc);
     set_control_data(control_data);
+
+    //変数の値が異常なら処理をしない
+    if(check_value() < 0) return 0;
+
     update_errors();
     
     total_error = Kp_*p_error_ + Ki_*i_error_*loop_time_ + Kd_*d_error_;
