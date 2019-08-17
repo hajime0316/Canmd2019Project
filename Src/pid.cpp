@@ -8,6 +8,7 @@
 
 #include "pid.hpp"
 #include "main.h"
+#include "canmd_manager.h"
 
 Pid::Pid(double Kp, double Ki, double Kd){
     Kp_ = Kp;
@@ -35,8 +36,20 @@ void Pid::update_errors(){
     prev_diff_data_ = diff_data;
 }
 
+int Pid::check_value(){
+    if(control_data_ < 0 || control_data_ > MOTOR_CONTROL_DATA_MAX)   return -1;
+    if(enc_ < -MAX_ENCODER_COUNT || enc_ > MAX_ENCODER_COUNT) return -2;
+
+    //正常
+    return 0;
+}
+
 double Pid::pid_calc(int enc, int control_data){
     double total_error;
+    
+    //変数の値のチェック
+    if(check_value() < 0) return 0;
+
     set_enc(enc);
     set_control_data(control_data);
     update_errors();

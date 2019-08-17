@@ -49,6 +49,9 @@ class Pid {
         //誤差の更新
         void update_errors();
 
+        //値が正常か確認
+        int check_value();
+
     public:
         //コンストラクタ
         Pid(double, double, double);
