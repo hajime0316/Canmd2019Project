@@ -15,6 +15,9 @@
 
 static int md_id = 0;
 static uint8_t uart3_buf[8];
+static volatile int g_velocity[2] = {};
+static volatile int g_motor_control_data[2] = {};
+static volatile double g_duty_rate[2] = {};
 
 void setup(void) {
     // md_id初期化
@@ -93,8 +96,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         //PID制御
         static Pid pid[2] = {{10,0,2},{1,0,0}};
         for(int i = 0; i < 2; i++){
-            pid[i].get_enc(velocity[i].get_velocity());
-            pid[i].get_ideal(motor_control_data[i]);
+            pid[i].get_enc(g_velocity[i] = velocity[i].get_velocity());
+            pid[i].get_ideal(g_motor_control_data[i] = motor_control_data[i]);
             pid[i].update_errors();
             motor_control_data[i] = pid[i].pid_cal();
         }
@@ -108,8 +111,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         static Stm32f3AntiphasePwm pwm0(&htim8);
         static Stm32f3AntiphasePwm pwm1(&htim1);
 
-        pwm0.update_duty(duty_rate[0]);
-        pwm1.update_duty(duty_rate[1]);
+        pwm0.update_duty(g_duty_rate[0] = duty_rate[0]);
+        pwm1.update_duty(g_duty_rate[1] = duty_rate[1]);
 	}
 
 	// 約180msecタイマ
