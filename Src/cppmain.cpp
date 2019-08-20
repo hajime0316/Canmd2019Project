@@ -94,7 +94,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         }
 
         //PID制御
-        static Pid pid[2] = {{200,0,10},{1,0,0}};
+        static Pid pid[2] = {{200,0,50},{1,0,0}};
         for(int i = 0; i < 2; i++){
             pid[i].get_enc(g_velocity[i] = velocity[i].get_velocity());
             pid[i].get_ideal(g_motor_control_data[i] = motor_control_data[i]);
