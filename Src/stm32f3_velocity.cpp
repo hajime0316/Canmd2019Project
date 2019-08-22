@@ -60,9 +60,9 @@ int Stm32f3Velocity::periodic_calculate_velocity(void) {
 
     past_encoder_count = present_encoder_count;
 
-    return velocity;
+    return velocity_sign * velocity;
 }
 
 int Stm32f3Velocity::get_velocity(void) {
-    return velocity;
+    return velocity_sign * velocity;
 }
