@@ -70,6 +70,7 @@ void loop(void) {
         stm32f3_printf("%4d  ", motor_setup_data[i].kp);
         stm32f3_printf("%4d  ", motor_setup_data[i].ki);
         stm32f3_printf("%4d  ", motor_setup_data[i].kd);
+        stm32f3_printf("%4d  ", velocity_module[i].get_velocity());
     }
     stm32f3_printf("\r\n");
 }
