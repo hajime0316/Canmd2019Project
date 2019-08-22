@@ -95,8 +95,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
         // PIDモジュールを作成
         static Pid pid_module[2] = {
-            {motor_setup_data[0].kp,motor_setup_data[0].ki, motor_setup_data[0].kd}, 
-            {motor_setup_data[1].kp,motor_setup_data[1].ki, motor_setup_data[1].kd}
+            {(double)motor_setup_data[0].kp, (double)motor_setup_data[0].ki, (double)motor_setup_data[0].kd},
+            {(double)motor_setup_data[1].kp, (double)motor_setup_data[1].ki, (double)motor_setup_data[1].kd}
         };
 
         // 速度計算
@@ -115,7 +115,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
             
             case PID_MODE:
                 // PID制御の計算
-                motor_control_data[i] = pid_module[i].pid_calc(velocity_module[i].get_velocity, motor_control_data[i]);
+                motor_control_data[i] = pid_module[i].pid_calc(velocity_module[i].get_velocity(), motor_control_data[i]);
 
                 // duty比計算
                 duty_rate[i] = motor_control_data[i] / (double)MOTOR_CONTROL_DATA_MAX;
