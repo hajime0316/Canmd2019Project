@@ -68,3 +68,12 @@ int Stm32f3Velocity::periodic_calculate_velocity(void) {
 int Stm32f3Velocity::get_velocity(void) {
     return velocity_sign * velocity;
 }
+
+void Stm32f3Velocity::reverse_rotation() {
+    if(velocity_sign == 1) {
+        velocity_sign = -1;
+    }
+    else {
+        velocity_sign = 1;
+    }
+}

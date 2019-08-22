@@ -25,6 +25,7 @@ public:
     
     int periodic_calculate_velocity(void);
     int get_velocity(void);
+    void reverse_rotation();
 };
 
 #endif  /* STM32F3_VELOCITY_HPP */
