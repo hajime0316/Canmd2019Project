@@ -11,6 +11,7 @@
 #include "canmd_manager.h"
 #include "stm32f3_printf.h"
 #include "stm32f3_antiphase_pwm.hpp"
+#include "pid.hpp"
 
 static int md_id = 0;
 
