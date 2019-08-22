@@ -11,6 +11,7 @@
 #include "canmd_manager.h"
 #include "stm32f3_printf.h"
 #include "stm32f3_antiphase_pwm.hpp"
+#include "pid.hpp"
 
 static int md_id = 0;
 
@@ -89,6 +90,16 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         //// モーターセットアップデータの取得
         MotorSetupData motor_setup_data[2];
         canmd_manager_get_motor_setup_data(motor_setup_data);
+
+        // PIDモジュールを作成
+        static Pid pid_module[2] = {
+            {motor_setup_data[0].kp,motor_setup_data[0].ki, motor_setup_data[0].kd}, 
+            {motor_setup_data[1].kp,motor_setup_data[1].ki, motor_setup_data[1].kd}
+        };
+
+        // velocityモジュールの作成
+        static Stm32f3Velocity velocity_module[2] = {&htim2, &htim3};
+ 
         for (int i = 0; i < 2; i++)
         {
             //// モーターコントロールモードによってduty比の決め方を分ける
@@ -99,11 +110,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
                 break;
             
             case PID_MODE:
-                // TODO
-                // ここにPID制御の制御則を実装する．
-                for (int i = 0; i < 2; i++) {
-                    duty_rate[i] = 0;
-                }
+                // 速度計算
+                velocity_module[i].periodic_calculate_velocity();
+
+                // PID制御の計算
+                motor_control_data[i] = pid_module[i].pid_calc(velocity_module[i].get_velocity, motor_control_data[i]);
+
+                // duty比計算
+                duty_rate[i] = motor_control_data[i] / (double)MOTOR_CONTROL_DATA_MAX;
                 
                 break;
 
