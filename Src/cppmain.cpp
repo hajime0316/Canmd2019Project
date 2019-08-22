@@ -121,9 +121,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
                 // PID制御の計算
                 motor_control_data[i] = pid_module[i].pid_calc(velocity_module[i].get_velocity, motor_control_data[i]);
 
-                for (int i = 0; i < 2; i++) {
-                    duty_rate[i] = 0;
-                }
+                // duty比計算
+                duty_rate[i] = motor_control_data[i] / (double)MOTOR_CONTROL_DATA_MAX;
                 
                 break;
 
