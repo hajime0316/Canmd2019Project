@@ -74,6 +74,7 @@ void canmd_manager_init(void)
 MdDataType canmd_manager_set_can_receive_data(const unsigned char receive_data[], int receive_data_len)
 {
     MdDataType md_data_type = 0;
+    int motor_setup_data_index = 0;
     
     md_data_type = (receive_data[0] >> 6) & 0b11;
     
@@ -81,7 +82,6 @@ MdDataType canmd_manager_set_can_receive_data(const unsigned char receive_data[]
         case MD_DATA_TYPE_MOTOR_0_SETUP_DATA:
         case MD_DATA_TYPE_MOTOR_1_SETUP_DATA:
             // motor_setup_data_indexの決定
-            int motor_setup_data_index;
             if(md_data_type == MD_DATA_TYPE_MOTOR_0_SETUP_DATA) {
                 motor_setup_data_index = 0;
             }
