@@ -28,12 +28,12 @@ Stm32f3Velocity::Stm32f3Velocity(const TIM_HandleTypeDef *htim) {
     HAL_TIM_Encoder_Start((TIM_HandleTypeDef *)htim, TIM_CHANNEL_ALL);
 }
 
-Stm32f3Velocity::Stm32f3Velocity(const TIM_HandleTypeDef *htim, int is_reverse_turn) {
+Stm32f3Velocity::Stm32f3Velocity(const TIM_HandleTypeDef *htim, int is_reverse_rotation) {
     this->htim = htim;
     this->velocity = 0;
     this->past_encoder_count = htim->Instance->CNT;
 
-    if(is_reverse_turn) {
+    if(is_reverse_rotation) {
         this->velocity_sign = -1;
     }
     else {

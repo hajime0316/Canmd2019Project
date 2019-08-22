@@ -20,7 +20,7 @@ private:
     int velocity_sign;
 public:
     Stm32f3Velocity(const TIM_HandleTypeDef *htim);
-    Stm32f3Velocity(const TIM_HandleTypeDef *htim, int is_reverse_turn);
+    Stm32f3Velocity(const TIM_HandleTypeDef *htim, int is_reverse_rotation);
     ~Stm32f3Velocity();
     
     int periodic_calculate_velocity(void);
