@@ -97,6 +97,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
             {motor_setup_data[0].kp,motor_setup_data[0].ki, motor_setup_data[0].kd}, 
             {motor_setup_data[1].kp,motor_setup_data[1].ki, motor_setup_data[1].kd}
         };
+
+        // 速度計算
+        for (int i = 0; i < 2; i++){
+            velocity_module[i].periodic_calculate_velocity();
+        }
  
         for (int i = 0; i < 2; i++)
         {
@@ -108,9 +113,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
                 break;
             
             case PID_MODE:
-                // 速度計算
-                velocity_module[i].periodic_calculate_velocity();
-
                 // PID制御の計算
                 motor_control_data[i] = pid_module[i].pid_calc(velocity_module[i].get_velocity, motor_control_data[i]);
 
