@@ -115,6 +115,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
                 // TODO
                 // ここにPID制御の制御則を実装する．
 
+                // 速度計算
+                velocity_module[i].periodic_calculate_velocity();
+
                 // PID制御の計算
                 motor_control_data[i] = pid_module[i].pid_calc(velocity_module[i].get_velocity, motor_control_data[i]);
 
