@@ -14,6 +14,7 @@
 #include "pid.hpp"
 
 static int md_id = 0;
+static int g_velocity[2] = {};
 
 void setup(void) {
     // md_id初期化
