@@ -100,7 +100,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         };
 
         // velocityモジュールの作成
-        static Stm32f3Velocity velocity_module[2] = {&htim2, &htim3};
+        static Stm32f3Velocity velocity_module[2] = {{&htim2, 0}, {&htim3, 0}};
         // 速度計算
         for (int i = 0; i < 2; i++){
             g_velocity[i] = velocity_module[i].periodic_calculate_velocity();
