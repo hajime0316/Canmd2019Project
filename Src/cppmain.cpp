@@ -100,7 +100,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
         // velocityモジュールの作成
         static Stm32f3Velocity velocity_module[2] = {&htim2, &htim3};
- 
+        // 速度計算
+        for (int i = 0; i < 2; i++){
+            velocity_module[i].periodic_calculate_velocity();
+        }
+
         for (int i = 0; i < 2; i++)
         {
             //// モーターコントロールモードによってduty比の決め方を分ける
@@ -111,9 +115,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
                 break;
             
             case PID_MODE:
-                // 速度計算
-                velocity_module[i].periodic_calculate_velocity();
-
                 // PID制御の計算
                 motor_control_data[i] = pid_module[i].pid_calc(velocity_module[i].get_velocity(), motor_control_data[i]);
 
