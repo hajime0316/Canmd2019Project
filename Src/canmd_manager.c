@@ -79,6 +79,17 @@ MdDataType canmd_manager_set_can_receive_data(const unsigned char receive_data[]
     
     switch(md_data_type) {
         case MD_DATA_TYPE_MOTOR_0_SETUP_DATA:
+        case MD_DATA_TYPE_MOTOR_1_SETUP_DATA:
+            // motor_setup_data_indexの決定
+            int motor_setup_data_index;
+            if(md_data_type == MD_DATA_TYPE_MOTOR_0_SETUP_DATA) {
+                motor_setup_data_index = 0;
+            }
+            else {
+                motor_setup_data_index = 1;
+            }
+
+            // motor_setup_dataの更新
             if(receive_data_len == 4) {
                 internal_motor_setup_data[0].kp = receive_data[1];
                 internal_motor_setup_data[0].ki = receive_data[2];
