@@ -21,7 +21,25 @@ Stm32f3Velocity::Stm32f3Velocity(const TIM_HandleTypeDef *htim) {
     this->htim = htim;
     this->velocity = 0;
     this->past_encoder_count = htim->Instance->CNT;
-    
+
+    velocity_sign = 1;
+
+    // ハードウェアスタート
+    HAL_TIM_Encoder_Start((TIM_HandleTypeDef *)htim, TIM_CHANNEL_ALL);
+}
+
+Stm32f3Velocity::Stm32f3Velocity(const TIM_HandleTypeDef *htim, int is_reverse_rotation) {
+    this->htim = htim;
+    this->velocity = 0;
+    this->past_encoder_count = htim->Instance->CNT;
+
+    if(is_reverse_rotation) {
+        this->velocity_sign = -1;
+    }
+    else {
+        this->velocity_sign = 1;
+    }
+
     // ハードウェアスタート
     HAL_TIM_Encoder_Start((TIM_HandleTypeDef *)htim, TIM_CHANNEL_ALL);
 }
@@ -44,9 +62,18 @@ int Stm32f3Velocity::periodic_calculate_velocity(void) {
 
     past_encoder_count = present_encoder_count;
 
-    return velocity;
+    return velocity_sign * velocity;
 }
 
 int Stm32f3Velocity::get_velocity(void) {
-    return velocity;
+    return velocity_sign * velocity;
+}
+
+void Stm32f3Velocity::reverse_rotation() {
+    if(velocity_sign == 1) {
+        velocity_sign = -1;
+    }
+    else {
+        velocity_sign = 1;
+    }
 }
