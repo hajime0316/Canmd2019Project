@@ -14,6 +14,7 @@
 #include "pid.hpp"
 
 static int md_id = 0;
+static Stm32f3Velocity velocity_module[2] = {&htim2, &htim3};   // velocityモジュールの作成
 
 void setup(void) {
     // md_id初期化
@@ -69,6 +70,7 @@ void loop(void) {
         stm32f3_printf("%4d  ", motor_setup_data[i].kp);
         stm32f3_printf("%4d  ", motor_setup_data[i].ki);
         stm32f3_printf("%4d  ", motor_setup_data[i].kd);
+        stm32f3_printf("%4d  ", velocity_module[i].get_velocity());
     }
     stm32f3_printf("\r\n");
 }
@@ -97,8 +99,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
             {motor_setup_data[1].kp,motor_setup_data[1].ki, motor_setup_data[1].kd}
         };
 
-        // velocityモジュールの作成
-        static Stm32f3Velocity velocity_module[2] = {&htim2, &htim3};
+        // 速度計算
+        for (int i = 0; i < 2; i++){
+            velocity_module[i].periodic_calculate_velocity();
+        }
  
         for (int i = 0; i < 2; i++)
         {
@@ -110,9 +114,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
                 break;
             
             case PID_MODE:
-                // 速度計算
-                velocity_module[i].periodic_calculate_velocity();
-
                 // PID制御の計算
                 motor_control_data[i] = pid_module[i].pid_calc(velocity_module[i].get_velocity, motor_control_data[i]);
 
