@@ -91,14 +91,14 @@ MdDataType canmd_manager_set_can_receive_data(const unsigned char receive_data[]
 
             // motor_setup_dataの更新
             if(receive_data_len == 4) {
-                internal_motor_setup_data[0].kp = receive_data[1];
-                internal_motor_setup_data[0].ki = receive_data[2];
-                internal_motor_setup_data[0].kd = receive_data[3];
+                internal_motor_setup_data[motor_setup_data_index].kp = receive_data[1];
+                internal_motor_setup_data[motor_setup_data_index].ki = receive_data[2];
+                internal_motor_setup_data[motor_setup_data_index].kd = receive_data[3];
                 if((receive_data[0] & 1) == 0) {
-                    internal_motor_setup_data[0].control_mode = DUTY_RATE_MODE;
+                    internal_motor_setup_data[motor_setup_data_index].control_mode = DUTY_RATE_MODE;
                 }
                 else {
-                    internal_motor_setup_data[0].control_mode = PID_MODE;
+                    internal_motor_setup_data[motor_setup_data_index].control_mode = PID_MODE;
                 }
             }
             
