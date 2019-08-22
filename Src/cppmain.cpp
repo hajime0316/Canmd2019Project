@@ -112,9 +112,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
                 break;
             
             case PID_MODE:
-                // TODO
-                // ここにPID制御の制御則を実装する．
-
                 // 速度計算
                 velocity_module[i].periodic_calculate_velocity();
 
