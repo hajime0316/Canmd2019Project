@@ -14,6 +14,7 @@
 #include "pid.hpp"
 
 static int md_id = 0;
+static Stm32f3Velocity velocity_module[2] = {&htim2, &htim3};   // velocityモジュールの作成
 
 void setup(void) {
     // md_id初期化
@@ -96,9 +97,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
             {motor_setup_data[0].kp,motor_setup_data[0].ki, motor_setup_data[0].kd}, 
             {motor_setup_data[1].kp,motor_setup_data[1].ki, motor_setup_data[1].kd}
         };
-
-        // velocityモジュールの作成
-        static Stm32f3Velocity velocity_module[2] = {&htim2, &htim3};
  
         for (int i = 0; i < 2; i++)
         {
