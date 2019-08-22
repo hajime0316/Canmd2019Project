@@ -90,6 +90,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         //// モーターセットアップデータの取得
         MotorSetupData motor_setup_data[2];
         canmd_manager_get_motor_setup_data(motor_setup_data);
+
+        // PIDモジュールを作成
+        static Pid pid_module[2] = {
+            {motor_setup_data[0].kp,motor_setup_data[0].ki, motor_setup_data[0].kd}, 
+            {motor_setup_data[1].kp,motor_setup_data[1].ki, motor_setup_data[1].kd}
+        };
+
         for (int i = 0; i < 2; i++)
         {
             //// モーターコントロールモードによってduty比の決め方を分ける
@@ -105,12 +112,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
                 // TODO
                 // ここにPID制御の制御則を実装する．
 
-                // PIDモジュールを作成
-                static Pid pid_module[2] = {
-                    {motor_setup_data[0].kp,motor_setup_data[0].ki, motor_setup_data[0].kd}, 
-                    {motor_setup_data[1].kp,motor_setup_data[1].ki, motor_setup_data[1].kd}
-                };
-                
                 for (int i = 0; i < 2; i++) {
                     duty_rate[i] = 0;
                 }
