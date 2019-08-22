@@ -97,6 +97,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
             {motor_setup_data[1].kp,motor_setup_data[1].ki, motor_setup_data[1].kd}
         };
 
+        // velocityモジュールの作成
+        static Stm32f3Velocity velocity_module[2] = {&htim2, &htim3};
+ 
         for (int i = 0; i < 2; i++)
         {
             //// モーターコントロールモードによってduty比の決め方を分ける
