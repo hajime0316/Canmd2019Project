@@ -47,7 +47,7 @@ void setup(void) {
 
     // セットアップルーチン
     while(!canmd_manager_is_motor_setup_data_received());
-    stm32f3_printf("Setup routine was finished!");
+    stm32f3_printf("Setup routine was finished!\r\n");
 
     // 制御則スタート
     HAL_TIM_Base_Start_IT(&htim6);
