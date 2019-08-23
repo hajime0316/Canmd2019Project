@@ -12,7 +12,7 @@
 #include "stm32f3xx_hal.h"
 
 #define DEFAULT_LOOP_TIME 0.005
-#define PID_OUTPUT_MAX 500
+#define PID_OUTPUT_MAX 100
 
 class Pid {
     private:
